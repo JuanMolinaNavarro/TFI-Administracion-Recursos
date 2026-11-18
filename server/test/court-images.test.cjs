@@ -146,10 +146,10 @@ test('an unreadable legacy photo falls back to a bundled image',async t=>{
   setStored(own,'data:image/png;base64,AAAA');
   assert.doesNotMatch((await catalog()).raw,/base64/);
   const shown=(await listed(own)).image;
-  assert.equal(shown,'assets/padel.png');
+  assert.equal(shown,'assets/padel-v1.webp');
   assert.equal((await fetch(`${base}/api/courts/${own}/image?v=abc`)).status,404);
   assert.equal((await save(await club(),own,shown)).status,200);
-  assert.equal(stored(own).image,'assets/padel.png');
+  assert.equal(stored(own).image,'assets/padel-v1.webp');
 });
 
 test('photos are only served for courts that have one',async t=>{
@@ -255,5 +255,5 @@ test('the frontend accepts court photo addresses produced by the server',async()
   const {imageSource}=await import('../../client/src/shared/api.js');
   const stored=address(own,png);
   assert.equal(imageSource(stored),`/${stored}`);
-  for(const unsafe of ['api/courts/../../x/image?v=abc',`api/courts/a/image?v=${version(png)}&x=1`,'api/courts/a/image?v=abc'])assert.equal(imageSource(unsafe),'/assets/padel.png',unsafe);
+  for(const unsafe of ['api/courts/../../x/image?v=abc',`api/courts/a/image?v=${version(png)}&x=1`,'api/courts/a/image?v=abc'])assert.equal(imageSource(unsafe),'/assets/padel-v1.webp',unsafe);
 });

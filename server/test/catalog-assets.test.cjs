@@ -1,0 +1,21 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const {existsSync,readFileSync,statSync}=require('node:fs');
+const {resolve}=require('node:path');
+const root=resolve(__dirname,'../..');
+const read=file=>readFileSync(resolve(root,file),'utf8');
+
+test('catalog sources only reference optimized images that exist',()=>{
+  const images=new Set(['courts.js','server/seed-tucuman.cjs','server/court-images.cjs','client/src/shared/api.js'].flatMap(file=>read(file).match(/assets\/[a-z0-9_]+(?:-v\d+)?\.(?:png|webp)/g)||[]));
+  assert.ok(images.size>=12);
+  for(const image of images){
+    assert.match(image,/-v\d+\.webp$/);
+    assert.ok(existsSync(resolve(root,image)),image);
+    assert.ok(statSync(resolve(root,image)).size<=150*1024,image);
+  }
+});
+
+test('versioned catalog images are cached long term',()=>{
+  const rule=JSON.parse(read('vercel.json')).headers.find(item=>item.source.startsWith('/assets/'));
+  assert.deepEqual(rule?.headers,[{key:'Cache-Control',value:'public, max-age=31536000, immutable'}]);
+});

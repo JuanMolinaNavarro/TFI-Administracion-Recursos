@@ -29,5 +29,5 @@ export function friendly(date) { return new Date(`${date}T12:00:00-03:00`).toLoc
 export function minutes(time) { const [h, m] = time.split(':').map(Number); return h * 60 + m; }
 export const resourceId = b => b.resourceId || `${b.courtId}-court-1`;
 export function overlaps(bookings, id, date, slot, duration = 60) { const start = minutes(slot); return bookings.some(b => b.status !== 'cancelled' && resourceId(b) === id && b.date === date && start < minutes(b.slot) + Number(b.duration || 60) && start + duration > minutes(b.slot)); }
-export function imageSource(value) { return /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value || '') ? value : `/${/^(assets\/[a-z0-9_.-]+|api\/(?:complexes|courts)\/[a-z0-9_-]+\/image\?v=[a-f0-9]{32})$/i.test(value || '') ? value : 'assets/padel.png'}`; }
+export function imageSource(value) { return /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value || '') ? value : `/${/^(assets\/[a-z0-9_.-]+|api\/(?:complexes|courts)\/[a-z0-9_-]+\/image\?v=[a-f0-9]{32})$/i.test(value || '') ? value : 'assets/padel-v1.webp'}`; }
 export const labels = { confirmed: 'Confirmada', pending: 'Pendiente', cancelled: 'Cancelada' };

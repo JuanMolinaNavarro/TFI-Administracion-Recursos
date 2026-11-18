@@ -8,7 +8,7 @@ const COURTS_DATA = [
     location: 'Yerba Buena',
     price: 24000,
     rating: 4.8,
-    image: 'assets/kaiser_futbol.png',
+    image: 'assets/kaiser_futbol-v1.webp',
     features: ['Césped Sintético', 'Luz LED', 'Estacionamiento', 'Bar Deportivo'],
     availableSlots: ['16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00']
   },
@@ -20,7 +20,7 @@ const COURTS_DATA = [
     location: 'Yerba Buena',
     price: 34000,
     rating: 4.6,
-    image: 'assets/sb5_futbol.png',
+    image: 'assets/sb5_futbol-v1.webp',
     features: ['Césped Sintético F7', 'Reflectores LED', 'Vestuarios', 'Bar & Parrilla'],
     availableSlots: ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00']
   },
@@ -32,7 +32,7 @@ const COURTS_DATA = [
     location: 'Yerba Buena',
     price: 48000,
     rating: 4.9,
-    image: 'assets/las_canas_futbol.png',
+    image: 'assets/las_canas_futbol-v1.webp',
     features: ['Césped Profesional F11', 'Tribunas', 'Estacionamiento Amplio', 'Tercer Tiempo'],
     availableSlots: ['18:00', '19:00', '20:00', '21:00', '22:00']
   },
@@ -44,7 +44,7 @@ const COURTS_DATA = [
     location: 'Yerba Buena',
     price: 18000,
     rating: 4.9,
-    image: 'assets/las_canas_padel.png',
+    image: 'assets/las_canas_padel-v1.webp',
     features: ['Vidrio Templado Panorámico', 'Césped Azul WPT', 'Palas de Alquiler', 'Bar y Vestuarios'],
     availableSlots: ['16:00', '17:30', '19:00', '20:30', '22:00']
   },
@@ -56,7 +56,7 @@ const COURTS_DATA = [
     location: 'Yerba Buena',
     price: 16000,
     rating: 4.7,
-    image: 'assets/padel_point.png',
+    image: 'assets/padel_point-v1.webp',
     features: ['Cancha de Blindex', 'Césped Sintético', 'Iluminación LED', 'Reserva Directa'],
     availableSlots: ['16:00', '17:30', '19:00', '20:30', '22:00']
   },
@@ -68,7 +68,7 @@ const COURTS_DATA = [
     location: 'Yerba Buena',
     price: 19000,
     rating: 4.8,
-    image: 'assets/mad_padel.png',
+    image: 'assets/mad_padel-v1.webp',
     features: ['Canchas Techadas', 'Césped Sintético Pro', 'Escuela de Pádel', 'Estacionamiento'],
     availableSlots: ['15:00', '16:30', '18:00', '19:30', '21:00']
   },
@@ -80,7 +80,7 @@ const COURTS_DATA = [
     location: 'Tafí Viejo',
     price: 22000,
     rating: 4.9,
-    image: 'assets/talleres_tafi.png',
+    image: 'assets/talleres_tafi-v1.webp',
     features: ['Piso de Parquet Flotante', 'Tableros de Vidrio Templado', 'Estadio Techado', 'Colores Oficiales'],
     availableSlots: ['16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00']
   },
@@ -92,7 +92,7 @@ const COURTS_DATA = [
     location: 'San Miguel de Tucumán',
     price: 18000,
     rating: 4.5,
-    image: 'assets/tucuman_bb.png',
+    image: 'assets/tucuman_bb-v1.webp',
     features: ['Madera Parquet Pintado', 'Aros Profesionales', 'Techado Completo', 'Luz LED'],
     availableSlots: ['15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00']
   },
@@ -104,7 +104,7 @@ const COURTS_DATA = [
     location: 'San Miguel de Tucumán',
     price: 16000,
     rating: 4.3,
-    image: 'assets/club_belgrano.png',
+    image: 'assets/club_belgrano-v1.webp',
     features: ['Madera Parquet Histórica', 'Luces LED Deportivas', 'Estacionamiento', 'Buffet del Club'],
     availableSlots: ['16:00', '17:00', '18:00', '19:00', '20:00', '21:00']
   }

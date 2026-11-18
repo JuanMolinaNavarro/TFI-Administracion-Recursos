@@ -9,7 +9,7 @@ const {runInNewContext}=require('node:vm');
 
 const PADEL=['16:00','17:30','19:00','20:30','22:00'];
 const FUTBOL=['16:00','17:00','18:00','19:00','20:00','21:00','22:00'];
-const IMG={padel:'assets/padel.png',futbol:'assets/soccer.png',basquet:'assets/basketball.png'};
+const IMG={padel:'assets/padel-v1.webp',futbol:'assets/soccer-v1.webp',basquet:'assets/basketball-v1.webp'};
 const LABEL={padel:'Pádel',futbol:'Fútbol 5',basquet:'Básquetbol'};
 const real=(id,name,location,sport,price,features,courts,sportLabel)=>({id,name,location,sport,sportLabel:sportLabel||LABEL[sport],price,rating:0,image:IMG[sport],features,availableSlots:sport==='padel'?PADEL:FUTBOL,courts});
 const NEW=[

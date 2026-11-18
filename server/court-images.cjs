@@ -4,7 +4,7 @@ const { parseImage, readImage, sendImage } = require('./complex-images.cjs');
 // Court photos used to live inside courts.data, with a limit of 2.4 million characters.
 const LEGACY_MAX_BYTES = 1800000;
 const MAX_UPLOADS_PER_HOUR = 120;
-const FALLBACK_IMAGE = 'assets/padel.png';
+const FALLBACK_IMAGE = 'assets/padel-v1.webp';
 const INVALID_PHOTO = 'Foto inválida.';
 
 const imageAddress = (courtId, version) => `api/courts/${encodeURIComponent(courtId)}/image?v=${version}`;

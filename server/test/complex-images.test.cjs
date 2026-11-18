@@ -135,5 +135,5 @@ test('the frontend accepts only image addresses produced by the server',async()=
   assert.equal(imageSource(stored),`/${stored}`);
   assert.equal(imageSource('assets/soccer.png'),'/assets/soccer.png');
   assert.equal(imageSource(photo),photo);
-  for(const unsafe of ['https://example.test/a.png','api/complexes/../../x/image?v=abc','api/complexes/a/image?v=abc&x=1'])assert.equal(imageSource(unsafe),'/assets/padel.png',unsafe);
+  for(const unsafe of ['https://example.test/a.png','api/complexes/../../x/image?v=abc','api/complexes/a/image?v=abc&x=1'])assert.equal(imageSource(unsafe),'/assets/padel-v1.webp',unsafe);
 });
