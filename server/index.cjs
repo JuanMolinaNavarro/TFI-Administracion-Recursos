@@ -170,7 +170,10 @@ function createApp({
       const path = url.pathname;
       if (path.startsWith('/api/')) {
         const expected = origin || `http://${req.headers.host}`;
-        if (req.headers.origin && req.headers.origin !== expected) fail(403, 'Origen no autorizado.');
+        const proto = String(req.headers['x-forwarded-proto'] || 'http').split(',')[0].trim();
+        // Same-origin requests (Origin == public Host) are always legitimate; this also covers every Vercel alias/domain.
+        const sameOrigin = req.headers.host && req.headers.origin === `${proto}://${req.headers.host}`;
+        if (req.headers.origin && req.headers.origin !== expected && !sameOrigin) fail(403, 'Origen no autorizado.');
         if (req.headers['sec-fetch-site'] === 'cross-site') fail(403, 'Origen no autorizado.');
         const ip = req.socket.remoteAddress || 'unknown';
         limit(`all:${ip}`, 600, 60000);
