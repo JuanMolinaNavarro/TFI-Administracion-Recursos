@@ -182,16 +182,14 @@ function createApp({
           ok: true
         });
         if (path === '/api/catalog' && req.method === 'GET') {
-          const all = await db.prepare('SELECT id,data FROM complexes ORDER BY rowid').all();
-          const current = await session(req);
-          const visible = [];
-          for (const c of all) {
-            if ((await subscriptionFor(db, c.id))?.effectiveStatus !== 'suspended' || current?.complex_id === c.id) visible.push(c);
-          }
+          // Independent queries run in parallel; suspended complexes come from one query (no per-complex lookups).
+          const [all, current, suspended, courtRows] = await Promise.all([db.prepare('SELECT id,data FROM complexes ORDER BY rowid').all(), session(req), db.prepare("SELECT complex_id FROM subscriptions WHERE status='suspended'").all(), db.prepare('SELECT complex_id,data FROM courts ORDER BY rowid').all()]);
+          const hidden = new Set(suspended.map(r => r.complex_id));
+          const visible = all.filter(c => !hidden.has(c.id) || current?.complex_id === c.id);
           const ids = new Set(visible.map(c => c.id));
           return json(res, 200, {
             complexes: visible.map(r => JSON.parse(r.data)),
-            courts: (await db.prepare('SELECT complex_id,data FROM courts ORDER BY rowid').all()).filter(c => ids.has(c.complex_id)).map(r => JSON.parse(r.data))
+            courts: courtRows.filter(c => ids.has(c.complex_id)).map(r => JSON.parse(r.data))
           });
         }
         if (path === '/api/auth/me' && req.method === 'GET') {
