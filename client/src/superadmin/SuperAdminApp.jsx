@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { request, localDate } from '../shared/api.js';
-import { Icon, Modal, ErrorMessage } from '../shared/components.jsx';
+import { Icon, Modal, Busy, PageLoader, ErrorMessage } from '../shared/components.jsx';
 import '../styles/admin.css';
 import './superadmin.css';
 import PlatformSections from './PlatformSections.jsx';
@@ -15,8 +15,8 @@ export default function SuperAdminApp(){
   async function logout(){setSaving(true);try{await request('/superadmin/auth/logout',{method:'POST',body:{}});setUser(null);setData(initial);setModal(null);}catch(e){setError(e);}finally{setSaving(false);}}
   async function navigate(key){setView(key);setDrawer(false);setError(null);if(key==='audit'){try{setAudit(await request('/superadmin/audit'));}catch(e){setError(e);}}}
   async function saved(result){setModal(result.credentials?{type:'credentials',credentials:result.credentials}:result.message?{type:'reminder-preview',record:result}:null);await refresh();}
-  if(loading)return <main><p role="status">Cargando gestión de RTL…</p></main>;
-  if(!user)return <section className="session-access"><div className="access-card"><a className="brand" href="/"><img src="/assets/logo.png" alt="RTL"/><span>RTL<span className="brand-caption">GESTIÓN DE PLATAFORMA</span></span></a><p className="eyebrow">ACCESO EXCLUSIVO DEL EQUIPO RTL</p><h1>Un lugar para<br/>hacer crecer RTL.</h1><p className="access-intro">Administrá complejos, suscripciones y cuentas de tu plataforma.</p><form onSubmit={login}><label>Correo del equipo RTL<input name="email" type="email" autoComplete="username" required maxLength={150}/></label><label>Contraseña<input name="password" type="password" autoComplete="current-password" required maxLength={256}/></label><ErrorMessage error={error}/><button className="button primary" disabled={saving}>{saving?'Ingresando…':'Ingresar a RTL'}</button></form><p className="access-note">Las cuentas de los complejos no tienen acceso a este panel.</p><a className="text-button" href="/">Volver al sitio público</a></div></section>;
+  if(loading)return <main><PageLoader label="Cargando gestión de RTL…"/></main>;
+  if(!user)return <section className="session-access"><div className="access-card"><a className="brand" href="/"><img src="/assets/logo.png" alt="RTL"/><span>RTL<span className="brand-caption">GESTIÓN DE PLATAFORMA</span></span></a><p className="eyebrow">ACCESO EXCLUSIVO DEL EQUIPO RTL</p><h1>Un lugar para<br/>hacer crecer RTL.</h1><p className="access-intro">Administrá complejos, suscripciones y cuentas de tu plataforma.</p><form onSubmit={login}><label>Correo del equipo RTL<input name="email" type="email" autoComplete="username" required maxLength={150}/></label><label>Contraseña<input name="password" type="password" autoComplete="current-password" required maxLength={256}/></label><ErrorMessage error={error}/><button className="button primary" disabled={saving}>{saving?<Busy>Ingresando…</Busy>:'Ingresar a RTL'}</button></form><p className="access-note">Las cuentas de los complejos no tienen acceso a este panel.</p><a className="text-button" href="/">Volver al sitio público</a></div></section>;
   const sections = {
     complexes: ['Nuestros complejos', 'Espacios deportivos y cuentas administradoras que forman parte de RTL.'],
     subscriptions: ['Suscripciones', 'Planes, vencimientos y seguimiento de renovaciones.'],
@@ -54,6 +54,6 @@ function PlatformModal({modal,plans,onClose,onSaved,onUnauthorized}){
     {type==='payment'&&<><p className="dialog-intro">Registrá un pago recibido para {complex.name}. Esto no cobra dinero; actualiza su vencimiento y reactiva el servicio.</p><label>Importe recibido ($)<input type="number" name="amount" min="1" max="10000000" required defaultValue={sub.monthly_fee||50000}/></label><label>Nuevo vencimiento<input type="date" name="paidUntil" required min={localDate()} defaultValue={future()}/></label><label>Referencia del comprobante<input name="reference" required maxLength={150} placeholder="Transferencia / número de comprobante"/></label></>}
     {type==='reminder'&&<><p className="dialog-intro">Se preparará un borrador con el abono y vencimiento de {complex.name}.</p><label>Canal<select name="channel"><option value="whatsapp">WhatsApp</option><option value="email">Correo electrónico</option></select></label></>}
     {type==='account'&&<><p className="dialog-intro">La cuenta tendrá acceso únicamente a {complex.name}. La contraseña se generará automáticamente.</p><label>Correo de la nueva cuenta<input type="email" name="email" required maxLength={150}/></label></>}
-    <ErrorMessage error={error}/><div className="dialog-actions"><button type="button" className="button secondary" onClick={onClose}>Cancelar</button><button className="button primary" disabled={saving}>{saving?'Guardando…':type==='reminder'?'Preparar recordatorio':type==='create'||type==='account'?'Crear':'Guardar'}</button></div>
+    <ErrorMessage error={error}/><div className="dialog-actions"><button type="button" className="button secondary" onClick={onClose}>Cancelar</button><button className="button primary" disabled={saving}>{saving?<Busy>Guardando…</Busy>:type==='reminder'?'Preparar recordatorio':type==='create'||type==='account'?'Crear':'Guardar'}</button></div>
   </form></Modal>;
 }
