@@ -1,12 +1,20 @@
+const connectionMessage = 'No pudimos conectar con el servidor. Probá de nuevo en unos minutos.';
+
 export async function request(path, { body, ...options } = {}) {
-  const response = await fetch(`/api${path}`, {
-    ...options, credentials: 'same-origin',
-    headers: { ...(body ? { 'Content-Type': 'application/json' } : {}), ...options.headers },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  let response;
+  try {
+    response = await fetch(`/api${path}`, {
+      ...options, credentials: 'same-origin',
+      headers: { ...(body ? { 'Content-Type': 'application/json' } : {}), ...options.headers },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch (error) {
+    if (error.name === 'AbortError') throw error;
+    throw new Error(connectionMessage);
+  }
   let data;
   try { data = await response.json(); }
-  catch { throw new Error('No se pudo conectar con el backend. Iniciá el proyecto con npm start.'); }
+  catch { throw new Error(connectionMessage); }
   if (!response.ok) { const error = new Error(data.error || 'No se pudo completar la operación.'); error.status = response.status; error.code = data.code; error.requiredPlan = data.requiredPlan; throw error; }
   return data;
 }

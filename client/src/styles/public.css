@@ -2500,3 +2500,5 @@ body:has(.react-public-dialog[open]) { overflow: hidden; }
   transform: none;
   cursor: not-allowed;
 }
+
+a.mini-footer-link { text-decoration: none; }

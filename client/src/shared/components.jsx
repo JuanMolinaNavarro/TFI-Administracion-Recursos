@@ -4,9 +4,14 @@ import '../styles/loader.css';
 
 export function Icon({ name, ...props }) { return <i className={`fa-solid fa-${({ calendar: 'calendar-days', court: 'table-cells', wallet: 'wallet', dashboard: 'table-cells-large', users: 'users', plus: 'plus', close: 'xmark', arrow: 'arrow-right-from-bracket', download: 'download', clock: 'clock', check: 'check', leaf: 'leaf', menu: 'bars', edit: 'pen', left: 'chevron-left', right: 'chevron-right', info: 'circle-info', search: 'magnifying-glass' })[name] || name}`} aria-hidden="true" {...props} />; }
 export function Modal({ title, children, onClose, className = '' }) {
-  const ref = useRef(null);
-  useEffect(() => { const dialog = ref.current; dialog.showModal(); return () => dialog.close(); }, []);
-  return <dialog ref={ref} className={className} onCancel={event => { event.preventDefault(); onClose(); }} onClick={event => { if (event.target === ref.current) onClose(); }} aria-label={title}><div className="dialog-heading"><h2>{title}</h2><button type="button" className="icon-button" aria-label="Cerrar" onClick={onClose}><Icon name="close" /></button></div>{children}</dialog>;
+  const ref = useRef(null), pressedOutside = useRef(false);
+  const isOutside = event => { const box = ref.current.getBoundingClientRect(); return event.target === ref.current && (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom); };
+  useEffect(() => {
+    const dialog = ref.current, opener = document.activeElement;
+    dialog.showModal();
+    return () => { dialog.close(); if (opener?.isConnected) opener.focus({ preventScroll: true }); };
+  }, []);
+  return <dialog ref={ref} className={className} onCancel={event => { event.preventDefault(); onClose(); }} onPointerDown={event => { pressedOutside.current = isOutside(event); }} onClick={event => { if (pressedOutside.current && isOutside(event)) onClose(); pressedOutside.current = false; }} aria-label={title}><div className="dialog-heading"><h2>{title}</h2><button type="button" className="icon-button" aria-label="Cerrar" onClick={onClose}><Icon name="close" /></button></div>{children}</dialog>;
 }
 export function Spinner() { return <span className="rtl-spinner" aria-hidden="true" />; }
 export function Busy({ children }) { return <span className="rtl-busy"><Spinner />{children}</span>; }

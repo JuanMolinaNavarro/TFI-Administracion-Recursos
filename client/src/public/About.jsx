@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { PlanCards, PlanGuarantee } from "./PlanCards.jsx";
 export default function About({ onFind, onPlan, initialTab = "company" }) {
  const [subtab, switchAboutSubtab] = useState(initialTab);
  const goToFind = onFind;
- const openClubModal = (name, price) => onPlan({name,price});
  return (<section id="view-about" className="view-container active" aria-labelledby="tab-about-btn">
         
         <div className="about-subtabs-nav" role="tablist" aria-label="Secciones de Sobre Nosotros">
@@ -185,75 +185,8 @@ export default function About({ onFind, onPlan, initialTab = "company" }) {
             <p className="plans-main-subtitle">Planes flexibles que se adaptan a las necesidades de tu club.</p>
           </div>
 
-          <div className="club-pricing-grid">
-            
-            <div className="club-pricing-card featured-plan">
-              <div className="plan-popular-badge">Más Popular</div>
-              <div className="plan-card-body">
-                <div className="plan-header">
-                  <h3 className="plan-name">Pro</h3>
-                  <div className="plan-price-row">
-                    <span className="plan-amount">$50.000</span>
-                    <span className="plan-period">/mes</span>
-                  </div>
-                  <p className="plan-description">Ideal para clubes medianos con múltiples necesidades.</p>
-                </div>
-
-                <ul className="plan-features-list">
-                  <li><i className="fa-solid fa-check"></i> <span>Turnos y reservas</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Control de stock</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>App para jugadores</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Torneos y rankings</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Estadísticas avanzadas</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Roles y permisos</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>POS para cantina</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Arqueo de caja y movimientos</span></li>
-                </ul>
-
-                <button type="button" className="plan-cta-btn" onClick={() => { openClubModal('Pro', '$50.000 /mes'); }}>
-                  Suscribirse Ahora
-                </button>
-              </div>
-            </div>
-
-            
-            <div className="club-pricing-card">
-              <div className="plan-card-body">
-                <div className="plan-header">
-                  <h3 className="plan-name">Elite</h3>
-                  <div className="plan-price-row">
-                    <span className="plan-amount">$100.000</span>
-                    <span className="plan-period">/mes</span>
-                  </div>
-                  <p className="plan-description">Solución completa para grandes complejos deportivos.</p>
-                </div>
-
-                <ul className="plan-features-list">
-                  <li><i className="fa-solid fa-check"></i> <span>Todo lo de Pro</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Multi-sede</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Reportes avanzados</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Soporte prioritario</span></li>
-                  <li><i className="fa-solid fa-check"></i> <span>Gerente de cuenta dedicado</span></li>
-                </ul>
-
-                <button type="button" className="plan-cta-btn" onClick={() => { openClubModal('Elite', '$100.000 /mes'); }}>
-                  Suscribirse Ahora
-                </button>
-              </div>
-            </div>
-          </div>
-
-          
-          <div className="plans-guarantee-card">
-            <div className="guarantee-icon"><i className="fa-solid fa-shield-halved"></i></div>
-            <div className="guarantee-text">
-              <h4>14 días de prueba bonificados en todos los planes</h4>
-              <p>Te asistimos con la configuración inicial y carga de canchas en menos de 24 horas. Sin costos ocultos.</p>
-            </div>
-            <button type="button" className="guarantee-btn" onClick={() => { openClubModal('Personalizado', 'A convenir'); }}>
-              <i className="fa-solid fa-headset"></i> Hablar con Asesor
-            </button>
-          </div>
+          <PlanCards onSelect={onPlan} />
+          <PlanGuarantee onSelect={onPlan} />
         </div>
       </section>);
 }

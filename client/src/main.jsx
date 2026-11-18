@@ -5,6 +5,8 @@ const App = location.pathname.startsWith('/superadmin')
   ? lazy(() => import('./superadmin/SuperAdminApp.jsx'))
   : location.pathname.startsWith('/admin')
   ? lazy(() => import('./admin/AdminApp.jsx'))
+  : location.pathname.startsWith('/clubes')
+  ? lazy(() => import('./landing/LandingApp.jsx'))
   : lazy(() => import('./public/PublicApp.jsx'));
 
 function hideBootSplash() {

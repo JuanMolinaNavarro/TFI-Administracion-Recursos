@@ -10,7 +10,7 @@ async function attachFrontend(server, {production=process.env.NODE_ENV==='produc
   const handle=async(req,res,next)=>{
     try {
       const path=new URL(req.url,'http://localhost').pathname;
-      if(['/','/index.html','/admin/','/superadmin/'].includes(path)) {
+      if(['/','/index.html','/admin/','/superadmin/','/clubes/'].includes(path)) {
         let html=await readFile(resolve(root,production?'dist/index.html':'index.html'),'utf8');
         if(vite)html=await vite.transformIndexHtml(req.url,html);
         res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'});

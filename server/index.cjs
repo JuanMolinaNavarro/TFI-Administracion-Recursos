@@ -374,7 +374,7 @@ function createApp({
         fail(404, 'Ruta no encontrada.');
       }
       if (!['GET', 'HEAD'].includes(req.method)) fail(405, 'Método no permitido.');
-      if (['/admin', '/superadmin'].includes(path)) {
+      if (['/admin', '/superadmin', '/clubes'].includes(path)) {
         res.writeHead(308, {
           Location: path + '/'
         });

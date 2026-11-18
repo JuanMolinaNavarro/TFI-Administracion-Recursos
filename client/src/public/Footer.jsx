@@ -42,6 +42,8 @@ export default function Footer({ onNavigate, inert }) {
           <button type="button" className="mini-footer-link" onClick={() => { switchTab('about'); switchAboutSubtab('company');; }}>Sobre Nosotros</button>
           <span className="mini-footer-dot" aria-hidden="true">•</span>
           <button type="button" className="mini-footer-link" onClick={() => { switchTab('about'); switchAboutSubtab('plans');; }}>Planes para Clubes</button>
+          <span className="mini-footer-dot" aria-hidden="true">•</span>
+          <a className="mini-footer-link" href="/clubes/">Para clubes</a>
         </nav>
 
         
