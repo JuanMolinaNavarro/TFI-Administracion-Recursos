@@ -5,13 +5,13 @@
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "client/dist",
   "functions": {
-    "api/index.cjs": {
+    "api/index.js": {
       "includeFiles": "server/**",
       "maxDuration": 30
     }
   },
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/index.cjs" },
+    { "source": "/api/:path*", "destination": "/api/index.js" },
     { "source": "/superadmin/:path*", "destination": "/index.html" },
     { "source": "/admin/:path*", "destination": "/index.html" }
   ],
