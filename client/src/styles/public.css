@@ -3,16 +3,19 @@
 :root {
   --bg-color: #eef2f7;
   --text-primary: #2d3748;
-  --text-secondary: #718096;
+  --text-secondary: #5d6b7f;
   --accent-color: #66F1C2;
   --accent-dark: #10b981;
+  --accent-text: #0a7954;
   --accent-light: #e0fbf3;
   --accent-gradient: linear-gradient(135deg, #66F1C2 0%, #10b981 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #7affd4 0%, #059669 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #7affd4 0%, #0aa374 100%);
+  --on-accent: #03291f;
   --shadow-dark: #d1d9e6;
   --shadow-light: #ffffff;
   --danger-color: #ff6b6b;
   --danger-light: #ffe8e8;
+  --danger-text: #d10000;
 
   /* Neumorphic Shadows */
   --shadow-raised: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
@@ -167,7 +170,7 @@ header {
 }
 
 .tab-btn.active i {
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 /* Filters & Search Section */
@@ -289,7 +292,7 @@ header {
 
 .category-pill.active {
   background: var(--accent-gradient);
-  color: #ffffff;
+  color: var(--on-accent);
   box-shadow: 3px 3px 10px rgba(16, 185, 129, 0.25), -3px -3px 10px var(--shadow-light);
   border: none;
 }
@@ -488,7 +491,7 @@ header {
 .book-btn {
   border: none;
   background: var(--accent-gradient);
-  color: #ffffff;
+  color: var(--on-accent);
   font-size: 0.9rem;
   font-weight: 800;
   padding: 0.8625rem 1.4625rem;
@@ -611,7 +614,7 @@ header {
 }
 
 .booking-section-title i {
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 /* Date Picker styling */
@@ -666,7 +669,7 @@ header {
 
 .slot-btn.selected {
   background: var(--accent-gradient);
-  color: #ffffff;
+  color: var(--on-accent);
   box-shadow: var(--shadow-inset-sm), 0 0 10px rgba(16, 185, 129, 0.35);
   border-color: transparent;
   font-weight: 800;
@@ -740,7 +743,7 @@ header {
   width: 100%;
   border: none;
   background: var(--accent-gradient);
-  color: #ffffff;
+  color: var(--on-accent);
   font-size: 1rem;
   font-weight: 800;
   padding: 1.1625rem;
@@ -786,7 +789,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-dark);
+  color: var(--accent-text);
   font-size: 2.5rem;
   border: 2px solid rgba(255, 255, 255, 0.8);
   animation: scaleInCheck 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -846,7 +849,7 @@ header {
 }
 
 .ticket-val.code {
-  color: var(--accent-dark);
+  color: var(--accent-text);
   font-family: monospace;
   font-size: 1.1rem;
 }
@@ -896,7 +899,7 @@ header {
 .go-book-btn {
   border: none;
   background: var(--accent-gradient);
-  color: #ffffff;
+  color: var(--on-accent);
   padding: 0.8625rem 1.5625rem;
   border-radius: var(--border-radius-md);
   font-weight: 800;
@@ -954,7 +957,7 @@ header {
   border-radius: 8px;
   text-transform: uppercase;
   background: var(--accent-light);
-  color: var(--accent-dark);
+  color: var(--accent-text);
   box-shadow: var(--shadow-inset-sm);
 }
 
@@ -988,7 +991,7 @@ header {
   width: 100%;
   border: none;
   background: var(--bg-color);
-  color: var(--danger-color);
+  color: var(--danger-text);
   font-size: 0.9rem;
   font-weight: 800;
   padding: 0.8rem;
@@ -1115,7 +1118,7 @@ header {
 }
 
 .menu-toggle-btn:hover {
-  color: var(--accent-dark);
+  color: var(--accent-text);
   box-shadow: var(--shadow-raised);
   transform: translateY(-1px);
 }
@@ -1237,7 +1240,7 @@ header {
 }
 
 .close-drawer-btn:hover {
-  color: var(--danger-color);
+  color: var(--danger-text);
   box-shadow: var(--shadow-inset-sm);
 }
 
@@ -1269,19 +1272,19 @@ header {
 
 .drawer-link i {
   font-size: 1.1rem;
-  color: var(--accent-dark);
+  color: var(--accent-text);
   width: 22px;
   text-align: center;
 }
 
 .drawer-link:hover {
   transform: translateX(4px);
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 .drawer-link.active {
   box-shadow: var(--shadow-inset);
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 .drawer-badge {
@@ -1289,7 +1292,7 @@ header {
   font-size: 0.68rem;
   padding: 0.2rem 0.55rem;
   background: var(--accent-light);
-  color: var(--accent-dark);
+  color: var(--accent-text);
   border-radius: 999px;
   font-weight: 800;
 }
@@ -1313,7 +1316,7 @@ header {
 
 .drawer-academic-badge i {
   font-size: 1.3rem;
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 .drawer-academic-badge div {
@@ -1365,7 +1368,7 @@ header {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--accent-dark);
+  color: var(--accent-text);
   background: var(--accent-light);
   padding: 0.35rem 0.8rem;
   border-radius: 999px;
@@ -1400,7 +1403,7 @@ header {
 }
 
 .about-hero-title span {
-  color: var(--accent-dark);
+  color: var(--accent-text);
   font-weight: 600;
 }
 
@@ -1474,7 +1477,7 @@ header {
 }
 
 .card-subtitle i {
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 .about-list {
@@ -1494,7 +1497,7 @@ header {
 }
 
 .about-list li i {
-  color: var(--accent-dark);
+  color: var(--accent-text);
   font-size: 0.85rem;
   margin-top: 0.2rem;
   flex-shrink: 0;
@@ -1518,7 +1521,7 @@ header {
 }
 
 .about-section-title i {
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 /* Stats Grid */
@@ -1545,7 +1548,7 @@ header {
 .about-stat-card .stat-number {
   font-size: 2rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--accent-text);
   font-family: 'Outfit', sans-serif;
   display: block;
 }
@@ -1586,7 +1589,7 @@ header {
   height: 36px;
   border-radius: 50%;
   background: var(--accent-light);
-  color: var(--accent-dark);
+  color: var(--accent-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1626,7 +1629,7 @@ header {
 .tech-category-badge {
   font-size: 0.7rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--accent-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -1672,7 +1675,7 @@ header {
   height: 40px;
   border-radius: 50%;
   background: var(--accent-light);
-  color: var(--accent-dark);
+  color: var(--accent-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1713,7 +1716,7 @@ header {
 .teachers-title {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--accent-dark);
+  color: var(--accent-text);
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -1740,7 +1743,7 @@ header {
 }
 
 .teachers-pills span i {
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 .about-cta-container {
@@ -1824,7 +1827,7 @@ header {
 }
 
 .mini-footer-link:hover {
-  color: var(--accent-dark);
+  color: var(--accent-text);
   background: var(--accent-light);
 }
 
@@ -1899,7 +1902,7 @@ header {
 
 .footer-contact-link:hover,
 .footer-contact-link:hover .footer-contact-icon {
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 .footer-whatsapp-link {
@@ -1907,7 +1910,7 @@ header {
   align-items: center;
   gap: 0.5rem;
   margin-top: 1.1rem;
-  color: var(--accent-dark);
+  color: var(--accent-text);
   font-size: 0.73rem;
   font-weight: 600;
   text-decoration: none;
@@ -2037,18 +2040,6 @@ header {
     font-size: 1.6rem;
   }
 
-  .about-subtabs-nav {
-    width: 100%;
-    flex-direction: column;
-    border-radius: var(--border-radius-md);
-    gap: 0.4rem;
-  }
-
-  .about-subtab-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
   .plans-main-title {
     font-size: 1.9rem;
   }
@@ -2125,6 +2116,40 @@ header {
   padding: 0.2rem 0.55rem;
   border-radius: 9999px;
   letter-spacing: 0.3px;
+}
+
+@media (max-width: 600px) {
+  .about-subtabs-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem;
+    width: 100%;
+    margin-bottom: 1.75rem;
+    padding: 0.35rem;
+    border-radius: var(--border-radius-md);
+  }
+
+  .about-subtab-btn {
+    justify-content: center;
+    gap: 0.4rem;
+    min-width: 0;
+    min-height: 48px;
+    padding: 0.5rem 0.4rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.84rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .subtab-pill-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-subtab-btn i {
+    display: none;
+  }
 }
 
 .about-subview {
@@ -2319,7 +2344,7 @@ header {
   min-width: 48px;
   border-radius: 50%;
   background: var(--accent-light);
-  color: var(--accent-dark);
+  color: var(--accent-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2359,7 +2384,7 @@ header {
 
 .guarantee-btn:hover {
   box-shadow: var(--shadow-inset-sm);
-  color: var(--accent-dark);
+  color: var(--accent-text);
 }
 
 /* Banner de invitación dentro de Sobre RTL */
@@ -2500,4 +2525,11 @@ body:has(.react-public-dialog[open]) { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
   .app-container *, .react-public-dialog, .react-public-dialog * { transition: none; animation: none; scroll-behavior: auto; }
+}
+
+/* Controles cómodos de tocar en pantallas táctiles. */
+@media (max-width: 768px), (pointer: coarse) {
+  .mini-footer-link, .footer-whatsapp-link { display: inline-flex; align-items: center; min-height: 44px; }
+  .footer-contact-link { align-items: center; min-height: 44px; }
+  .guarantee-btn, .club-invite-cta { min-height: 46px; }
 }

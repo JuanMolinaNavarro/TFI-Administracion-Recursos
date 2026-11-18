@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import {request,money} from '../shared/api.js';
+import {request,money,localStamp} from '../shared/api.js';
 import {ErrorMessage,InlineLoader,Modal} from '../shared/components.jsx';
 import { Metrics, Search } from '../shared/SectionUI.jsx';
 
@@ -20,7 +20,7 @@ export function PremiumView({feature,onUnauthorized,onUpgrade}){
     {['inventory','audit'].includes(feature)&&<div className="toolbar"><Search label={feature==='inventory'?'Buscar producto':'Buscar acción o responsable'} value={query} onChange={setQuery}/>{feature==='inventory'&&<select aria-label="Filtrar existencias" className="super-filter" value={stock} onChange={e=>setStock(e.target.value)}><option value="all">Todas las existencias</option><option value="empty">Sin stock</option><option value="low">Stock bajo (1 a 5)</option></select>}</div>}
     {feature==='reports'&&<div className="table-scroll"><table className="data-table"><thead><tr><th>MES</th><th>RESERVAS</th><th>VALOR TOTAL</th><th>COBRADO</th><th>POR COBRAR</th></tr></thead><tbody>{rows.map(r=><tr key={r.month}><td>{r.month}</td><td>{r.bookings}</td><td>{money(r.value)}</td><td>{money(r.collected)}</td><td>{money(r.value-r.collected)}</td></tr>)}</tbody></table></div>}
     {feature==='inventory'&&<><div className="table-scroll"><table className="data-table"><thead><tr><th>PRODUCTO</th><th>PRECIO</th><th>STOCK</th><th></th></tr></thead><tbody>{filtered.map(r=><tr key={r.id}><td>{r.name}</td><td>{money(r.price)}</td><td>{r.stock}</td><td><button className="text-button" onClick={()=>setEditing(r)}>Editar</button></td></tr>)}</tbody></table></div>{editing&&<form className="premium-content" onSubmit={save} key={editing.id||'new'}><div className="form-grid"><label>Nombre del producto<input name="name" maxLength={100} required defaultValue={editing.name}/></label><label>Precio ($)<input type="number" name="price" min="0" max="10000000" required defaultValue={editing.price||0}/></label><label>Unidades en stock<input name="stock" type="number" min="0" max="100000" required defaultValue={editing.stock||0}/></label></div><div className="dialog-actions"><button className="button secondary" type="button" onClick={()=>setEditing(null)}>Cancelar</button><button className="button primary" disabled={saving}>Guardar producto</button></div></form>}</>}
-    {feature==='audit'&&<div className="table-scroll"><table className="data-table"><thead><tr><th>FECHA</th><th>MOVIMIENTO</th><th>ACTOR</th></tr></thead><tbody>{filtered.map(r=><tr key={r.id}><td>{r.created_at.slice(0,19).replace('T',' ')}</td><td>{r.action}</td><td>{r.actor}</td></tr>)}</tbody></table></div>}
+    {feature==='audit'&&<div className="table-scroll"><table className="data-table"><thead><tr><th>FECHA</th><th>MOVIMIENTO</th><th>ACTOR</th></tr></thead><tbody>{filtered.map(r=><tr key={r.id}><td>{localStamp(r.created_at)}</td><td>{r.action}</td><td>{r.actor}</td></tr>)}</tbody></table></div>}
     {!filtered.length&&<p className="empty">No hay registros para estos filtros.</p>}
   </>}</section></>;
 }

@@ -1,8 +1,8 @@
 import React from "react";
-export default function Footer({ onNavigate }) {
+export default function Footer({ onNavigate, inert }) {
  const switchTab = onNavigate;
  const switchAboutSubtab = () => onNavigate("about", "plans");
- return (<footer className="rtl-mini-footer">
+ return (<footer className="rtl-mini-footer" inert={inert}>
       <div className="mini-footer-container">
         
         <div className="mini-footer-brand" onClick={() => { switchTab('find'); }} style={{"cursor": "pointer"}} title="Ir al inicio">
@@ -36,11 +36,11 @@ export default function Footer({ onNavigate }) {
         
         <nav className="mini-footer-nav" aria-label="Navegación secundaria">
           <button type="button" className="mini-footer-link" onClick={() => { switchTab('find'); }}>Buscar Canchas</button>
-          <span className="mini-footer-dot">•</span>
+          <span className="mini-footer-dot" aria-hidden="true">•</span>
           <button type="button" className="mini-footer-link" onClick={() => { switchTab('bookings'); }}>Mis Reservas</button>
-          <span className="mini-footer-dot">•</span>
+          <span className="mini-footer-dot" aria-hidden="true">•</span>
           <button type="button" className="mini-footer-link" onClick={() => { switchTab('about'); switchAboutSubtab('company');; }}>Sobre Nosotros</button>
-          <span className="mini-footer-dot">•</span>
+          <span className="mini-footer-dot" aria-hidden="true">•</span>
           <button type="button" className="mini-footer-link" onClick={() => { switchTab('about'); switchAboutSubtab('plans');; }}>Planes para Clubes</button>
         </nav>
 

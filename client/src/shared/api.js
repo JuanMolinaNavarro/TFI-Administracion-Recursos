@@ -13,6 +13,10 @@ export async function request(path, { body, ...options } = {}) {
 
 export const money = value => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(value || 0);
 export function localDate(date = new Date()) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
+export function localStamp(value) {
+  const date = new Date(value);
+  return value && !Number.isNaN(date.getTime()) ? date.toLocaleString('sv-SE', { timeZone: 'America/Argentina/Buenos_Aires' }) : value || '';
+}
 export function friendly(date) { return new Date(`${date}T12:00:00-03:00`).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }); }
 export function minutes(time) { const [h, m] = time.split(':').map(Number); return h * 60 + m; }
 export const resourceId = b => b.resourceId || `${b.courtId}-court-1`;

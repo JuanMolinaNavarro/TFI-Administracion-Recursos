@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Metrics, Search } from '../shared/SectionUI.jsx';
-import { money, localDate } from '../shared/api.js';
+import { money, localDate, localStamp as stamp } from '../shared/api.js';
 
 const statuses = { active: 'Activa', trial: 'En prueba', past_due: 'Vencida', suspended: 'Suspendida' };
 const statusBadge = s => <span className={`badge ${s === 'past_due' ? 'pending' : s === 'suspended' ? 'cancelled' : ''}`}>{statuses[s]}</span>;
-const stamp = value => value?.slice(0, 19).replace('T', ' ');
 
 export default function PlatformSections({ view, data, audit, onModal, refresh }) {
   const [query, setQuery] = useState(''), [filter, setFilter] = useState('all'), [plan, setPlan] = useState('all'), [month, setMonth] = useState('');
@@ -16,10 +15,10 @@ export default function PlatformSections({ view, data, audit, onModal, refresh }
   };
   const complexes = data.complexes.filter(c => search(`${c.name} ${c.location} ${c.admins.map(a => a.email).join(' ')}`));
   const subscriptions = complexes.filter(c => (filter === 'all' || (filter === 'soon' ? dueSoon(c) : c.subscription?.effectiveStatus === filter)) && (plan === 'all' || c.subscription?.plan === plan));
-  const receipts = data.payments.filter(p => (!month || p.created_at.startsWith(month)) && search(`${findComplex(p.complex_id)?.name} ${p.reference}`));
+  const receipts = data.payments.filter(p => (!month || stamp(p.created_at).startsWith(month)) && search(`${findComplex(p.complex_id)?.name} ${p.reference}`));
   const requests = data.requests.filter(r => search(`${r.clubName} ${r.owner} ${r.email}`));
   const events = audit.filter(a => search(`${a.action} ${a.actor} ${findComplex(a.complex_id)?.name}`) && (filter === 'all' || a.complex_id === filter));
-  const paid = data.payments.filter(p => !month || p.created_at.startsWith(month));
+  const paid = data.payments.filter(p => !month || stamp(p.created_at).startsWith(month));
   const metrics = {
     complexes: [
       ['Complejos registrados', data.complexes.length, 'Organizaciones que usan RTL', 'court'],
@@ -37,7 +36,7 @@ export default function PlatformSections({ view, data, audit, onModal, refresh }
       ['Cobros registrados', money(paid.reduce((n,p) => n + p.amount, 0)), month || 'Últimos 100 registros disponibles', 'wallet'],
       ['Comprobantes', paid.length, 'Según el período seleccionado', 'check'],
       ['Complejos con pagos', new Set(paid.map(p => p.complex_id)).size, 'Con al menos un cobro registrado', 'court'],
-      ['Último registro', paid[0]?.created_at.slice(0,10) || 'Sin cobros', 'Fecha de carga del comprobante', 'calendar']
+      ['Último registro', stamp(paid[0]?.created_at).slice(0,10) || 'Sin cobros', 'Fecha de carga del comprobante', 'calendar']
     ]
   };
 
