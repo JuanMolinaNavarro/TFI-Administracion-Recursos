@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Busy, ErrorMessage } from '../shared/components.jsx';
 import { imageSource, localDate, money, overlaps, request, friendly } from '../shared/api.js';
+import { useImagePicker } from '../shared/imagePicker.js';
 import { Badge } from './ReservationViews.jsx';
 
 export function BookingForm({ courts, bookings, initial, onClose, onSaved, onUnauthorized }) {
@@ -18,20 +19,8 @@ export function BookingForm({ courts, bookings, initial, onClose, onSaved, onUna
 
 export function CourtForm({ court, defaultCourt, onClose, onSaved, onUnauthorized }) {
   const base = court || { ...defaultCourt, name: '', enabled: true };
-  const [photo, setPhoto] = useState(base.image || ''), [error, setError] = useState(null), [loadingPhoto, setLoadingPhoto] = useState(false), [saving, setSaving] = useState(false);
-  const sequence = useRef(0);
-  useEffect(() => () => { sequence.current++; }, []);
-  async function loadPhoto(e) {
-    const file = e.target.files[0], id = ++sequence.current; setError(null); setLoadingPhoto(false); if (!file) return;
-    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 2 * 1024 * 1024) { setError('Elegí una imagen PNG, JPG o WebP de hasta 2 MB.'); e.target.value = ''; return; }
-    setLoadingPhoto(true);
-    try {
-      const data = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(file); });
-      const image = await new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = data; });
-      const canvas = document.createElement('canvas'), scale = Math.min(1, 1000 / image.width, 700 / image.height); canvas.width = Math.max(1, Math.round(image.width * scale)); canvas.height = Math.max(1, Math.round(image.height * scale)); canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
-      if (sequence.current === id) setPhoto(canvas.toDataURL('image/jpeg', 0.82));
-    } catch { if (sequence.current === id) setError('No se pudo leer la foto. Elegí otra imagen.'); } finally { if (sequence.current === id) setLoadingPhoto(false); }
-  }
+  const [error, setError] = useState(null), [saving, setSaving] = useState(false);
+  const { photo, loadingPhoto, loadPhoto } = useImagePicker({ initial: base.image || '', maxFileMb: 2, maxWidth: 1000, maxHeight: 700, onError: setError });
   async function submit(e) { e.preventDefault(); if (saving || loadingPhoto) return; const f = new FormData(e.currentTarget); setSaving(true); setError(null); try { const saved = await request(court ? `/admin/courts/${encodeURIComponent(court.id)}` : '/admin/courts', { method: court ? 'PUT' : 'POST', body: { ...base, name: f.get('name'), type: f.get('type'), surface: f.get('surface'), capacity: Number(f.get('capacity')), price: Number(f.get('price')), lighting: f.get('lighting') === 'on', enabled: f.get('enabled') === 'on', image: photo } }); onSaved(saved); } catch (error) { if (error.status === 401) onUnauthorized(); else setError(error); } finally { setSaving(false); } }
   return <Modal title={court ? 'Editar cancha' : 'Agregar cancha'} onClose={onClose}><form onSubmit={submit}><p className="dialog-intro">Actualizá la información y la foto de esta cancha.</p><label>Nombre de la cancha<input name="name" required maxLength={60} defaultValue={base.name} placeholder="Cancha 4" /></label><div className="form-grid"><label>Tipo<select name="type" defaultValue={base.type}>{['Cubierta', 'Semicubierta', 'Descubierta'].map(t => <option key={t}>{t}</option>)}</select></label><label>Superficie<input name="surface" required maxLength={60} defaultValue={base.surface} /></label></div><div className="form-grid"><label>Capacidad de jugadores<input type="number" name="capacity" min="1" max="100" required defaultValue={base.capacity} /></label><label>Precio por hora ($)<input type="number" name="price" min="1" max="10000000" step="1" required defaultValue={base.price} /></label></div><label>Foto de la cancha<input type="file" accept="image/png,image/jpeg,image/webp" onChange={loadPhoto} /><small>PNG, JPG o WebP, hasta 2 MB.</small></label><img className="court-photo-preview" src={imageSource(photo)} alt="Vista previa de la foto de la cancha" width="640" height="290" /><label className="checkbox-label"><input type="checkbox" name="lighting" defaultChecked={base.lighting} />Con iluminación</label><label className="checkbox-label"><input type="checkbox" name="enabled" defaultChecked={base.enabled} />Habilitada para reservas</label><ErrorMessage error={error} /><div className="dialog-actions"><button type="button" className="button secondary" onClick={onClose}>Cancelar</button><button className="button primary" disabled={saving || loadingPhoto}>{saving ? <Busy>Guardando…</Busy> : loadingPhoto ? <Busy>Cargando foto…</Busy> : 'Guardar cambios'}</button></div></form></Modal>;
 }

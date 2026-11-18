@@ -16,6 +16,9 @@ const {
   subscriptionFor
 } = require('./subscriptions.cjs');
 const {
+  complexImages
+} = require('./complex-images.cjs');
+const {
   openDatabase
 } = require('./database.cjs');
 const {
@@ -148,8 +151,14 @@ function createApp({
       status: row.status
     };
   }
+  const images = complexImages({
+    db,
+    fail,
+    limit
+  });
   const subscriptionRoutes = subscriptionsAPI({
     db,
+    images,
     body,
     json,
     fail,
@@ -191,6 +200,13 @@ function createApp({
             complexes: visible.map(r => JSON.parse(r.data)),
             courts: courtRows.filter(c => ids.has(c.complex_id)).map(r => JSON.parse(r.data))
           });
+        }
+        const imageMatch = path.match(/^\/api\/complexes\/([^/]+)\/image$/);
+        if (imageMatch && req.method === 'GET') return await images.serve(res, imageMatch[1], url.searchParams.get('v'));
+        if (path === '/api/admin/complex/image' && req.method === 'PUT') {
+          // The complex comes only from the session, so a club cannot target another one.
+          const s = await admin(req);
+          return json(res, 200, await images.save(s.complex_id, await body(req), s.email));
         }
         if (path === '/api/auth/me' && req.method === 'GET') {
           const s = await session(req);

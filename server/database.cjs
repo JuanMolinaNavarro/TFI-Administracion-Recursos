@@ -8,6 +8,7 @@ function openDatabase(filename = process.env.DB_PATH || resolve(__dirname, '../d
   const db = new DatabaseSync(filename);
   db.exec(`PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
     CREATE TABLE IF NOT EXISTS complexes(id TEXT PRIMARY KEY, data TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS complex_images(complex_id TEXT PRIMARY KEY REFERENCES complexes(id),mime TEXT NOT NULL CHECK(mime IN ('image/png','image/jpeg','image/webp')),data TEXT NOT NULL,version TEXT NOT NULL,updated_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS courts(
       id TEXT PRIMARY KEY, complex_id TEXT NOT NULL REFERENCES complexes(id), data TEXT NOT NULL,
       UNIQUE(id, complex_id)

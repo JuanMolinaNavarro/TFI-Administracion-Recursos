@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Metrics, Search } from '../shared/SectionUI.jsx';
-import { money, localDate, localStamp as stamp } from '../shared/api.js';
+import { imageSource, money, localDate, localStamp as stamp } from '../shared/api.js';
 
 const statuses = { active: 'Activa', trial: 'En prueba', past_due: 'Vencida', suspended: 'Suspendida' };
 const statusBadge = s => <span className={`badge ${s === 'past_due' ? 'pending' : s === 'suspended' ? 'cancelled' : ''}`}>{statuses[s]}</span>;
@@ -43,7 +43,7 @@ export default function PlatformSections({ view, data, audit, onModal, refresh }
   return <>
     {metrics[view] && <Metrics items={metrics[view]} />}
     {view === 'complexes' && <section className="panel"><div className="panel-heading"><div><h2>Directorio de complejos</h2><p>Administrá los espacios registrados y las personas que pueden gestionarlos.</p></div><button className="button secondary" onClick={refresh}>Actualizar directorio</button></div><div className="toolbar"><Search label="Buscar complejo, localidad o cuenta" value={query} onChange={setQuery} /></div>
-      <div className="table-scroll"><table className="data-table"><thead><tr><th>COMPLEJO</th><th>DEPORTE</th><th>CANCHAS</th><th>ADMINISTRADORES</th><th></th></tr></thead><tbody>{complexes.map(c => <tr key={c.id}><td>{c.name}<small>{c.location}</small></td><td>{c.sportLabel}</td><td>{c.courtCount}</td><td>{c.admins.length ? c.admins.map(a => <small className="account-email" key={a.id}>{a.email}</small>) : <span className="badge pending">Sin cuenta</span>}</td><td><button className="button secondary" onClick={() => onModal({type:'account',complex:c})}>Crear cuenta</button></td></tr>)}</tbody></table></div>{!complexes.length && <p className="empty">No hay complejos para esta búsqueda.</p>}
+      <div className="table-scroll"><table className="data-table"><thead><tr><th>IMAGEN</th><th>COMPLEJO</th><th>DEPORTE</th><th>CANCHAS</th><th>ADMINISTRADORES</th><th></th></tr></thead><tbody>{complexes.map(c => <tr key={c.id}><td><img className="complex-thumb" src={imageSource(c.image)} alt={`Imagen de ${c.name}`} width="72" height="48" loading="lazy" decoding="async" /></td><td>{c.name}<small>{c.location}</small></td><td>{c.sportLabel}</td><td>{c.courtCount}</td><td>{c.admins.length ? c.admins.map(a => <small className="account-email" key={a.id}>{a.email}</small>) : <span className="badge pending">Sin cuenta</span>}</td><td><div className="super-actions"><button className="button secondary" onClick={() => onModal({type:'account',complex:c})}>Crear cuenta</button><button className="button secondary" aria-label={`Cambiar imagen de ${c.name}`} onClick={() => onModal({type:'image',complex:c})}>Cambiar imagen</button></div></td></tr>)}</tbody></table></div>{!complexes.length && <p className="empty">No hay complejos para esta búsqueda.</p>}
       <p className="section-note">Cada cuenta administra únicamente las canchas de su complejo. Los planes y renovaciones se gestionan en Suscripciones.</p>
     </section>}
 

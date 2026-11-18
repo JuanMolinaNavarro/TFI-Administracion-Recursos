@@ -8,6 +8,9 @@ const {
   sessionFor,
   createPlatformSession
 } = require('./auth.cjs');
+const {
+  inTransaction
+} = require('./transaction.cjs');
 const PLANS = {
   basic: {
     name: 'Básico',
@@ -55,6 +58,7 @@ async function requireFeature(db, id, feature) {
 }
 function subscriptionsAPI({
   db,
+  images,
   body,
   json,
   fail,
@@ -91,18 +95,7 @@ function subscriptionsAPI({
       contactPhone: typeof data.contactPhone === 'string' ? data.contactPhone.trim().slice(0, 40) : ''
     };
   };
-  const transaction = async fn => {
-    if (db.transaction) return db.transaction(fn);
-    await db.exec('BEGIN IMMEDIATE');
-    try {
-      const result = await fn();
-      await db.exec('COMMIT');
-      return result;
-    } catch (e) {
-      await db.exec('ROLLBACK');
-      throw e;
-    }
-  };
+  const transaction = fn => inTransaction(db, fn);
   return async (req, res, path, url) => {
     if (path === '/api/superadmin/auth/me' && req.method === 'GET') {
       const s = await sessionFor(db, req, 'superadmin');
@@ -244,10 +237,14 @@ function subscriptionsAPI({
         });
         return true;
       }
-      const match = path.match(/^\/api\/superadmin\/complexes\/([^/]+)\/(subscription|payments|reminders)$/);
+      const match = path.match(/^\/api\/superadmin\/complexes\/([^/]+)\/(subscription|payments|reminders|image)$/);
       if (match) {
         const [, id, action] = match;
         await exists(id);
+        if (action === 'image' && req.method === 'PUT') {
+          json(res, 200, await images.save(id, await body(req), actor.email));
+          return true;
+        }
         if (action === 'subscription' && req.method === 'PUT') {
           const s = subInput(await body(req));
           await transaction(async () => {

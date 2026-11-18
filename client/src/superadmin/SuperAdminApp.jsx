@@ -5,6 +5,7 @@ import '../styles/theme.css';
 import '../styles/admin.css';
 import './superadmin.css';
 import PlatformSections from './PlatformSections.jsx';
+import ComplexImageForm from '../shared/ComplexImageForm.jsx';
 
 const future=()=>{const d=new Date();d.setDate(d.getDate()+30);return localDate(d);};
 const initial={complexes:[],plans:{},payments:[],reminders:[],requests:[]};
@@ -31,7 +32,8 @@ export default function SuperAdminApp(){
     <div className="shell"><header className="topbar"><div className="breadcrumb"><button className="icon-button mobile-menu" aria-label="Abrir navegación" aria-expanded={drawer} onClick={()=>setDrawer(!drawer)}><Icon name="menu"/></button><span>RTL</span><span>/</span><strong>{sections[view][0]}</strong></div><button className="button secondary logout-button" onClick={logout} disabled={saving}><Icon name="arrow"/>Cerrar sesión</button></header><main><div className="page-heading"><div><p className="eyebrow">GESTIÓN DE RTL</p><h1>{sections[view][0]}</h1><p>{sections[view][1]}</p></div>{view === 'complexes' && <button className="button primary" onClick={() => setModal({type:'create'})}><Icon name="plus"/>Nuevo complejo</button>}</div><ErrorMessage error={error}/>
       <PlatformSections key={view} view={view} data={data} audit={audit} onModal={setModal} refresh={() => refresh()} />
       <footer className="page-footer"><span>RTL · Gestión de la plataforma</span><span>Las cuentas de complejos y RTL tienen accesos separados</span></footer></main></div>
-    {modal&&<PlatformModal key={`${modal.type}-${modal.complex?.id||''}`} modal={modal} plans={data.plans} onClose={()=>setModal(null)} onSaved={saved} onUnauthorized={()=>{setUser(null);setModal(null);}}/>}
+    {modal?.type==='image'&&<ComplexImageForm complex={modal.complex} path={`/superadmin/complexes/${encodeURIComponent(modal.complex.id)}/image`} onClose={()=>setModal(null)} onSaved={async()=>{setModal(null);await refresh();}} onUnauthorized={()=>{setUser(null);setModal(null);}}/>}
+    {modal&&modal.type!=='image'&&<PlatformModal key={`${modal.type}-${modal.complex?.id||''}`} modal={modal} plans={data.plans} onClose={()=>setModal(null)} onSaved={saved} onUnauthorized={()=>{setUser(null);setModal(null);}}/>}
   </>;
 }
 

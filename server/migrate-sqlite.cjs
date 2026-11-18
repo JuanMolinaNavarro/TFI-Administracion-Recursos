@@ -3,7 +3,7 @@ const {existsSync,mkdirSync}=require('node:fs');
 const {resolve,dirname}=require('node:path');
 const {loadEnvironment}=require('./config.cjs');
 const {openPostgres}=require('./postgres.cjs');
-const tables=['complexes','courts','admins','sessions','platform_admins','platform_sessions','subscriptions','bookings','club_requests','subscription_payments','reminders','inventory','audit_log'];
+const tables=['complexes','complex_images','courts','admins','sessions','platform_admins','platform_sessions','subscriptions','bookings','club_requests','subscription_payments','reminders','inventory','audit_log'];
 
 async function migrate(){
   loadEnvironment();
@@ -16,7 +16,9 @@ async function migrate(){
     mkdirSync(dirname(backupPath),{recursive:true});
     await backup(source,backupPath);
     snapshot=new DatabaseSync(backupPath,{readOnly:true});
-    const counts=Object.fromEntries(tables.map(table=>[table,snapshot.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get().n]));
+    // Older SQLite files may predate some tables; those have nothing to import.
+    const available=tables.filter(table=>snapshot.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(table));
+    const counts=Object.fromEntries(available.map(table=>[table,snapshot.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get().n]));
     remote=await openPostgres();
     const existing=await remote.prepare('SELECT id FROM migration_history WHERE id=?').get('sqlite-import-v1');
     if(existing){console.log('La migración ya fue realizada. No se sobrescribió ningún dato.');return;}
@@ -25,7 +27,7 @@ async function migrate(){
       if(await remote.prepare('SELECT id FROM migration_history WHERE id=?').get('sqlite-import-v1'))throw new Error('Otra migración ya finalizó.');
       for(const table of tables){if((await remote.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get()).n)throw new Error(`La tabla ${table} ya tiene datos. Se canceló la importación para no sobrescribirlos.`);}
       await remote.query("SELECT set_config('rtl.importing','on',true)");
-      for(const table of tables){
+      for(const table of available){
         const columns=snapshot.prepare(`PRAGMA table_info(${table})`).all().map(c=>c.name);
         const placeholders=columns.map(()=>'?').join(',');
         const insert=remote.prepare(`INSERT INTO ${table}(${columns.join(',')}) VALUES(${placeholders})`);

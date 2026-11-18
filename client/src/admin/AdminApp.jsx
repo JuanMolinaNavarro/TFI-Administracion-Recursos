@@ -4,6 +4,7 @@ import { request, localDate, friendly, money, overlaps } from '../shared/api.js'
 import { Agenda, BookingTable } from './ReservationViews.jsx';
 import Courts from './Courts.jsx';
 import { BookingForm, CourtForm, BookingDetail } from './Forms.jsx';
+import ComplexImageForm from '../shared/ComplexImageForm.jsx';
 import '../styles/theme.css';
 import '../styles/admin.css';
 import '../superadmin/superadmin.css';
@@ -30,6 +31,7 @@ export default function AdminApp() {
   const reset = () => { sequence.current++; setData(empty); setModal(null); setView('reservations'); setDrawer(false); };
   const savedBooking = b => { sequence.current++; setData(old => ({ ...old, bookings: [b, ...old.bookings.filter(row => row.id !== b.id)] })); setModal(null); setToast('Reserva guardada correctamente.'); };
   const savedCourt = c => { sequence.current++; setData(old => ({ ...old, courts: old.courts.some(row => row.id === c.id) ? old.courts.map(row => row.id === c.id ? c : row) : [...old.courts, c] })); setModal(null); setToast('Cancha guardada correctamente.'); };
+  const savedImage = image => { sequence.current++; setData(old => ({ ...old, complexes: old.complexes.map(row => row.id === old.user.complexId ? { ...row, image } : row) })); setModal(null); setToast('Imagen del catálogo actualizada.'); };
   async function login(e) { e.preventDefault(); if (saving) return; const f = new FormData(e.currentTarget); setSaving(true); setError(null); try { await request('/auth/login', { method: 'POST', body: { email: f.get('email'), password: f.get('password') } }); await refresh(); } catch (error) { setError(error); } finally { setSaving(false); } }
   async function logout() { if (saving) return; setSaving(true); try { await request('/auth/logout', { method: 'POST', body: {} }); reset(); } catch (error) { setError(error); } finally { setSaving(false); } }
   async function toggle(c) { if (saving) return; setSaving(true); try { savedCourt(await request(`/admin/courts/${encodeURIComponent(c.id)}`, { method: 'PUT', body: { ...c, enabled: !c.enabled } })); } catch (error) { if (error.status === 401) reset(); else setError(error); } finally { setSaving(false); } }
@@ -49,6 +51,7 @@ export default function AdminApp() {
     <main>
       <div className="page-heading"><div><p className="eyebrow">{complex?.name}</p><h1>{pages[view][0]}</h1><p>{pages[view][1]}</p></div><div className="heading-actions">
         {view === 'reservations' && <button className="button secondary" onClick={exportCSV}><Icon name="download" />{mode === 'history' ? 'Exportar historial' : 'Exportar agenda'}</button>}
+        {view === 'courts' && complex && <button className="button secondary" onClick={() => setModal({ type: 'catalog-image' })}><Icon name="image" />Imagen del catálogo</button>}
         {['overview','reservations'].includes(view) && <button className="button primary" onClick={() => book()}><Icon name="plus" />Nueva reserva</button>}
       </div></div>
       <ErrorMessage error={error} />
@@ -69,6 +72,7 @@ export default function AdminApp() {
     {modal?.type==='upgrade'&&<Upgrade tier={modal.tier} onClose={()=>setModal(null)}/>}
     {modal?.type === 'booking' && <BookingForm courts={courts} bookings={all} initial={modal} onClose={() => setModal(null)} onSaved={b => { setDate(b.date); savedBooking(b); }} onUnauthorized={reset} />}
     {modal?.type === 'court' && <CourtForm court={modal.court} defaultCourt={courts[0]} onClose={() => setModal(null)} onSaved={savedCourt} onUnauthorized={reset} />}
+    {modal?.type === 'catalog-image' && complex && <ComplexImageForm complex={complex} path="/admin/complex/image" onClose={() => setModal(null)} onSaved={savedImage} onUnauthorized={reset} />}
     {detail && <BookingDetail booking={detail} onClose={() => setModal(null)} onSaved={savedBooking} onUnauthorized={reset} />}
     {toast && <div className="toast show" role="status">{toast}</div>}
   </>;
