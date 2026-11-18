@@ -39,6 +39,12 @@ test('PostgreSQL integration: scoped accounts, atomic booking conflicts, transac
   assert.deepEqual(concurrent.map(r=>r.status).sort(),[201,409]);
   assert.equal((await club('/auth/login','POST',{email:'a@example.test',password})).status,200);
   assert.equal((await club('/admin/bookings')).body.length,1);
+  const courtPhoto='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+  const ownCourt=(await guest('/catalog')).body.courts.find(c=>c.id==='padel-3-court-2');
+  const savedPhoto=await club('/admin/courts/padel-3-court-2','PUT',{...ownCourt,image:courtPhoto});
+  assert.equal(savedPhoto.status,200);
+  assert.match(savedPhoto.body.image,/^api\/courts\/padel-3-court-2\/image\?v=[a-f0-9]{32}$/);
+  assert.equal((await db.prepare('SELECT complex_id FROM court_images WHERE court_id=?').get('padel-3-court-2')).complex_id,'padel-3');
   assert.equal((await club('/superadmin/complexes')).status,401);
   assert.equal((await club('/admin/reports')).status,403);
   assert.equal((await rtl('/superadmin/auth/login','POST',{email:'rtl@example.test',password})).status,200);

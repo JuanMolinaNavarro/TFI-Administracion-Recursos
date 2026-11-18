@@ -13,6 +13,7 @@ function openDatabase(filename = process.env.DB_PATH || resolve(__dirname, '../d
       id TEXT PRIMARY KEY, complex_id TEXT NOT NULL REFERENCES complexes(id), data TEXT NOT NULL,
       UNIQUE(id, complex_id)
     );
+    CREATE TABLE IF NOT EXISTS court_images(court_id TEXT PRIMARY KEY,complex_id TEXT NOT NULL,mime TEXT NOT NULL CHECK(mime IN ('image/png','image/jpeg','image/webp')),data TEXT NOT NULL,version TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(court_id,complex_id) REFERENCES courts(id,complex_id));
     CREATE TABLE IF NOT EXISTS admins(
       id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL,
       complex_id TEXT NOT NULL REFERENCES complexes(id)

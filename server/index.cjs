@@ -19,6 +19,9 @@ const {
   complexImages
 } = require('./complex-images.cjs');
 const {
+  courtImages
+} = require('./court-images.cjs');
+const {
   openDatabase
 } = require('./database.cjs');
 const {
@@ -122,23 +125,22 @@ function createApp({
   };
   async function scopedCourt(req, id) {
     const s = await admin(req),
-      c = await court(id);
+      row = await db.prepare('SELECT data FROM courts WHERE id=?').get(id),
+      c = row ? JSON.parse(row.data) : null;
     if (!c || c.complexId !== s.complex_id) fail(404, 'Cancha no encontrada.');
     return {
       s,
-      c
+      c,
+      storedData: row.data
     };
   }
   function courtInput(data, base) {
-    const image = text(data.image, 'Foto', 2400000);
-    if (!/^assets\/[a-z0-9_.-]+$/i.test(image) && !/^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(image)) fail(400, 'Foto inválida.');
     if (!['Cubierta', 'Semicubierta', 'Descubierta'].includes(data.type)) fail(400, 'Tipo de cancha inválido.');
     return {
       ...base,
       name: text(data.name, 'Nombre', 60),
       surface: text(data.surface, 'Superficie', 60),
       type: data.type,
-      image,
       capacity: integer(data.capacity, 1, 100, 'Capacidad'),
       price: integer(data.price, 1, 10000000, 'Precio'),
       enabled: boolean(data.enabled, 'Habilitación'),
@@ -152,6 +154,11 @@ function createApp({
     };
   }
   const images = complexImages({
+    db,
+    fail,
+    limit
+  });
+  const courtPhotos = courtImages({
     db,
     fail,
     limit
@@ -198,11 +205,13 @@ function createApp({
           const ids = new Set(visible.map(c => c.id));
           return json(res, 200, {
             complexes: visible.map(r => JSON.parse(r.data)),
-            courts: courtRows.filter(c => ids.has(c.complex_id)).map(r => JSON.parse(r.data))
+            courts: courtRows.filter(c => ids.has(c.complex_id)).map(r => courtPhotos.publicCourt(JSON.parse(r.data)))
           });
         }
         const imageMatch = path.match(/^\/api\/complexes\/([^/]+)\/image$/);
         if (imageMatch && req.method === 'GET') return await images.serve(res, imageMatch[1], url.searchParams.get('v'));
+        const courtImageMatch = path.match(/^\/api\/courts\/([^/]+)\/image$/);
+        if (courtImageMatch && req.method === 'GET') return await courtPhotos.serve(res, courtImageMatch[1], url.searchParams.get('v'));
         if (path === '/api/admin/complex/image' && req.method === 'PUT') {
           // The complex comes only from the session, so a club cannot target another one.
           const s = await admin(req);
@@ -354,21 +363,20 @@ function createApp({
           });
           const duplicate = (await db.prepare('SELECT data FROM courts WHERE complex_id=?').all(s.complex_id)).some(r => JSON.parse(r.data).name.toLowerCase() === c.name.toLowerCase());
           if (duplicate) fail(409, 'Ya existe una cancha con ese nombre.');
-          await db.prepare('INSERT INTO courts(id,complex_id,data) VALUES(?,?,?)').run(c.id, s.complex_id, JSON.stringify(c));
-          return json(res, 201, c);
+          return json(res, 201, await courtPhotos.create(c, data.image));
         }
         const courtMatch = path.match(/^\/api\/admin\/courts\/([^/]+)$/);
         if (courtMatch && req.method === 'PUT') {
           const {
               s,
-              c
+              c,
+              storedData
             } = await scopedCourt(req, courtMatch[1]),
             data = await body(req),
             updated = courtInput(data, c);
           const duplicate = (await db.prepare('SELECT id,data FROM courts WHERE complex_id=? AND id!=?').all(s.complex_id, c.id)).some(r => JSON.parse(r.data).name.toLowerCase() === updated.name.toLowerCase());
           if (duplicate) fail(409, 'Ya existe una cancha con ese nombre.');
-          await db.prepare('UPDATE courts SET data=? WHERE id=? AND complex_id=?').run(JSON.stringify(updated), c.id, s.complex_id);
-          return json(res, 200, updated);
+          return json(res, 200, await courtPhotos.update(updated, storedData, data.image));
         }
         if (path === '/api/club-requests' && req.method === 'POST') {
           limit(`club:${ip}`, 10, 3600000);

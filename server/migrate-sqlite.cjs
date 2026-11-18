@@ -3,7 +3,7 @@ const {existsSync,mkdirSync}=require('node:fs');
 const {resolve,dirname}=require('node:path');
 const {loadEnvironment}=require('./config.cjs');
 const {openPostgres}=require('./postgres.cjs');
-const tables=['complexes','complex_images','courts','admins','sessions','platform_admins','platform_sessions','subscriptions','bookings','club_requests','subscription_payments','reminders','inventory','audit_log'];
+const tables=['complexes','complex_images','courts','court_images','admins','sessions','platform_admins','platform_sessions','subscriptions','bookings','club_requests','subscription_payments','reminders','inventory','audit_log'];
 
 async function migrate(){
   loadEnvironment();

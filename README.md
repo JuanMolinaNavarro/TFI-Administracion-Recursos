@@ -143,7 +143,7 @@ Las funciones premium se validan también en el servidor. Una suscripción venci
 - Los importes de las reservas en reportes se agrupan por fecha del turno, no por fecha de recepción del dinero.
 - Los historiales comerciales de RTL muestran hasta 100 registros recientes; su actividad global muestra hasta 150 movimientos.
 - No incluye recuperación de contraseñas ni envíos automáticos de mensajes.
-- Las fotos se guardan en SQLite como imágenes comprimidas.
+- Las fotos de canchas y complejos se guardan comprimidas en tablas propias y el catálogo solo incluye su dirección. Las fotos antiguas guardadas dentro de cada cancha se siguen viendo; para moverlas, publicar primero esta versión y después ejecutar `npm run db:convert-court-images` (vista previa) y `npm run db:convert-court-images -- --apply`. El comando usa `DATABASE_URL` si está definida.
 
 ## Estructura del proyecto
 

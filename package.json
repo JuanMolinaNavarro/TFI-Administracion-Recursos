@@ -13,6 +13,7 @@
     "admin:create": "node server/create-admin.cjs",
     "superadmin:create": "node server/create-superadmin.cjs",
     "db:migrate": "node server/migrate-sqlite.cjs",
+    "db:convert-court-images": "node server/convert-court-images.cjs",
     "build:vercel": "vite build && node scripts/copy-assets.cjs"
   },
   "dependencies": {

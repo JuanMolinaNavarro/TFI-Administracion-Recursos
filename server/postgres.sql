@@ -7,6 +7,7 @@ SET search_path TO rtl, extensions, public;
 CREATE TABLE IF NOT EXISTS complexes(id TEXT PRIMARY KEY, data TEXT NOT NULL, created_order BIGINT GENERATED ALWAYS AS IDENTITY);
 CREATE TABLE IF NOT EXISTS complex_images(complex_id TEXT PRIMARY KEY REFERENCES complexes(id),mime TEXT NOT NULL CHECK(mime IN ('image/png','image/jpeg','image/webp')),data TEXT NOT NULL,version TEXT NOT NULL,updated_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS courts(id TEXT PRIMARY KEY, complex_id TEXT NOT NULL REFERENCES complexes(id), data TEXT NOT NULL, created_order BIGINT GENERATED ALWAYS AS IDENTITY, UNIQUE(id,complex_id));
+CREATE TABLE IF NOT EXISTS court_images(court_id TEXT PRIMARY KEY,complex_id TEXT NOT NULL,mime TEXT NOT NULL CHECK(mime IN ('image/png','image/jpeg','image/webp')),data TEXT NOT NULL,version TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(court_id,complex_id) REFERENCES courts(id,complex_id));
 CREATE TABLE IF NOT EXISTS admins(id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, complex_id TEXT NOT NULL REFERENCES complexes(id));
 CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY, admin_id TEXT REFERENCES admins(id), expires_at BIGINT NOT NULL);
 CREATE INDEX IF NOT EXISTS session_expiry ON sessions(expires_at);
