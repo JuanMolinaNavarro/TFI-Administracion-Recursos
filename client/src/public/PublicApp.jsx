@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { request, money, friendly, imageSource } from '../shared/api.js';
-import { Icon, Modal, ErrorMessage, useCatalog } from '../shared/components.jsx';
+import { Icon, ErrorMessage, useCatalog } from '../shared/components.jsx';
 import About from './About.jsx';
 import Footer from './Footer.jsx';
 import BookingModal from './BookingModal.jsx';
 import ClubModal from './ClubModal.jsx';
+import TicketModal from './TicketModal.jsx';
 import '../styles/public.css';
+import '../styles/ticket.css';
 
 const sportNames = { all: 'Todos', futbol: 'Fútbol', padel: 'Pádel', basquet: 'Básquetbol' };
 function startingPrice(complex, courts) { const prices = courts.filter(c => c.complexId === complex.id && c.enabled).map(c => c.price); return prices.length ? Math.min(...prices) : complex.price; }
@@ -32,7 +34,7 @@ export default function PublicApp() {
       {tab === 'about' && <About key={aboutTab} initialTab={aboutTab} onFind={() => navigate('find')} onPlan={setPlan} />}
     </main><Footer onNavigate={navigate} />
     {selected && <BookingModal complex={selected} courts={catalog.courts} onClose={() => setSelected(null)} onSaved={booking => { setBookings(old => [booking, ...old]); setSelected(null); setTicket(booking); }} />}
-    {ticket && <Modal title="Reserva confirmada" className="react-public-dialog" onClose={() => setTicket(null)}><p>Presentá este comprobante en la recepción del complejo.</p><div className="ticket-code">{ticket.id}</div>{[['Cancha', ticket.courtName], ['Fecha', friendly(ticket.date)], ['Hora', ticket.slot], ['Titular', ticket.userName], ['Total', money(ticket.price)]].map(([label, value]) => <p key={label}><strong>{label}: </strong>{value}</p>)}<button className="go-book-btn" onClick={() => { setTicket(null); navigate('bookings'); }}>Ver mis reservas</button></Modal>}
+    {ticket && <TicketModal ticket={ticket} onClose={() => setTicket(null)} onViewBookings={() => { setTicket(null); navigate('bookings'); }} />}
     {plan && <ClubModal plan={plan} onClose={() => setPlan(null)} />}
   </div>;
 }
