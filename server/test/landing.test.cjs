@@ -31,11 +31,11 @@ test('plans keep the published offer', async () => {
   assert.match(planGuarantee.title, /14 días de prueba bonificados/);
 });
 
-test('about and landing share plans', () => {
-  assert.match(read('client/src/public/About.jsx'), /from "\.\/PlanCards\.jsx"/);
+test('about redirects clubs to the landing instead of duplicating plans', () => {
+  assert.match(read('client/src/public/About.jsx'), /href="\/clubes\/"/);
+  assert.doesNotMatch(read('client/src/public/About.jsx'), /PlanCards|\$50\.000/);
   assert.match(readIfPresent('client/src/landing/LandingApp.jsx'), /from '\.\.\/public\/PlanCards\.jsx'/);
   assert.match(read('client/src/public/PlanCards.jsx'), /from '\.\/clubPlans\.js'/);
-  assert.doesNotMatch(read('client/src/public/About.jsx'), /\$50\.000/);
 });
 
 test('landing opens the club request form', () => {
@@ -64,7 +64,8 @@ test('landing includes every approved section', () => {
 test('landing images reserve space', () => {
   const landing = readIfPresent('client/src/landing/LandingApp.jsx');
   const images = [...landing.matchAll(/<img\b[^>]*>/g)].map(match => match[0]);
-  assert.ok(images.length >= 4);
+  assert.ok(images.length >= 3);
+  assert.doesNotMatch(landing, /logo-mark\.webp/);
   for (const name of ['agenda', 'canchas', 'cobros']) assert.match(landing, new RegExp(`landing-${name}\\.webp', width: \\d+, height: \\d+, alt: '`), name);
   for (const image of images) {
     assert.match(image, /\bwidth=/, image);

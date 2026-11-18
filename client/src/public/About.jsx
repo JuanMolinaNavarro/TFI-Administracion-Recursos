@@ -1,24 +1,8 @@
-import React, { useState } from "react";
-import { PlanCards, PlanGuarantee } from "./PlanCards.jsx";
-export default function About({ onFind, onPlan, initialTab = "company" }) {
- const [subtab, switchAboutSubtab] = useState(initialTab);
+import React from "react";
+export default function About({ onFind }) {
  const goToFind = onFind;
  return (<section id="view-about" className="view-container active" aria-labelledby="tab-about-btn">
-        
-        <div className="about-subtabs-nav" role="tablist" aria-label="Secciones de Sobre Nosotros">
-          <button type="button" id="subtab-about-company-btn" className={`about-subtab-btn ${subtab === "company" ? "active" : ""}`} role="tab" aria-selected={subtab === "company"} aria-controls="about-subview-company" onClick={() => { switchAboutSubtab('company'); }}>
-            <i className="fa-solid fa-building-columns"></i>
-            <span>Sobre RTL</span>
-          </button>
-          <button type="button" id="subtab-about-plans-btn" className={`about-subtab-btn ${subtab === "plans" ? "active" : ""}`} role="tab" aria-selected={subtab === "plans"} aria-controls="about-subview-plans" onClick={() => { switchAboutSubtab('plans'); }}>
-            <i className="fa-solid fa-trophy"></i>
-            <span>Planes para Clubes</span>
-            <span className="subtab-pill-badge">Para Clubes</span>
-          </button>
-        </div>
-
-        
-        <div id="about-subview-company" className={`about-subview ${subtab === "company" ? "active" : ""}`}>
+        <div id="about-subview-company" className="about-subview active">
           
           <div className="about-hero-card">
             <div className="about-badge-row">
@@ -116,9 +100,9 @@ export default function About({ onFind, onPlan, initialTab = "company" }) {
               <h4><i className="fa-solid fa-trophy" style={{"color": "var(--accent-dark)", "marginRight": "0.5rem"}}></i> ¿Administrás un complejo o club deportivo?</h4>
               <p>Digitalizá turnos, reducí ausentismo y gestioná caja y stock con la app pensada para clubes argentinos.</p>
             </div>
-            <button type="button" className="club-invite-cta" onClick={() => { switchAboutSubtab('plans'); }}>
-              Ver Planes para Clubes <i className="fa-solid fa-arrow-right"></i>
-            </button>
+            <a className="club-invite-cta" href="/clubes/">
+              Conocer RTL para Clubes <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
           </div>
 
           
@@ -176,17 +160,6 @@ export default function About({ onFind, onPlan, initialTab = "company" }) {
               <i className="fa-solid fa-magnifying-glass"></i> Explorar Canchas Disponibles
             </button>
           </div>
-        </div>
-
-        
-        <div id="about-subview-plans" className={`about-subview ${subtab === "plans" ? "active" : ""}`}>
-          <div className="plans-hero-header">
-            <h2 className="plans-main-title">Elegí el plan perfecto para tu club</h2>
-            <p className="plans-main-subtitle">Planes flexibles que se adaptan a las necesidades de tu club.</p>
-          </div>
-
-          <PlanCards onSelect={onPlan} />
-          <PlanGuarantee onSelect={onPlan} />
         </div>
       </section>);
 }

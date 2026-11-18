@@ -21,8 +21,7 @@ html { scroll-behavior: smooth; }
   padding: 20px clamp(20px, 5vw, 56px);
   color: var(--on-accent);
 }
-.landing-logo { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font: 800 1.55rem var(--font-brand); letter-spacing: .04em; }
-.landing-logo img { border-radius: 12px; }
+.landing-logo { display: inline-flex; align-items: center; min-height: 44px; font-size: 1.55rem; }
 .landing-header nav { display: flex; align-items: center; gap: clamp(12px, 2vw, 24px); font-size: .9rem; font-weight: 700; }
 .landing-header nav a { display: inline-flex; align-items: center; min-height: 44px; }
 .landing-header nav button { min-height: 44px; padding: 0 16px; border: 0; border-radius: var(--border-radius-sm); background: var(--bg-color); color: var(--accent-text); cursor: pointer; font-weight: 800; transition: var(--transition-smooth); }

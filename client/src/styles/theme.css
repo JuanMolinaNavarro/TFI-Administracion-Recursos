@@ -98,6 +98,51 @@ input:-webkit-autofill:focus {
   background: var(--text-secondary);
 }
 
+/* Marca animada RTL -> Reserva Tu Lugar */
+.rtl-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-brand);
+  font-weight: 800;
+  letter-spacing: .04em;
+  line-height: 1.25;
+  white-space: nowrap;
+  transition: letter-spacing .26s cubic-bezier(.22, 1, .36, 1);
+}
+.rtl-wordmark-word {
+  display: inline-flex;
+  align-items: baseline;
+}
+.rtl-wordmark-rest {
+  display: inline-grid;
+  grid-template-columns: 0fr;
+  opacity: 0;
+  transition: grid-template-columns .26s cubic-bezier(.22, 1, .36, 1), opacity .18s ease;
+}
+.rtl-wordmark-rest > i {
+  min-width: 0;
+  overflow: hidden;
+  padding-block: .16em;
+  margin-block: -.16em;
+  font-style: normal;
+  white-space: pre;
+  transform: translateX(-.22em);
+  transition: transform .26s cubic-bezier(.22, 1, .36, 1);
+}
+:is(.landing-logo, .react-brand, .mini-footer-brand, .brand, .rtl-wordmark):is(:hover, :focus-visible) .rtl-wordmark,
+.rtl-wordmark:is(:hover, :focus-visible) {
+  letter-spacing: -.015em;
+}
+:is(.landing-logo, .react-brand, .mini-footer-brand, .brand, .rtl-wordmark):is(:hover, :focus-visible) .rtl-wordmark-rest,
+.rtl-wordmark:is(:hover, :focus-visible) .rtl-wordmark-rest {
+  grid-template-columns: 1fr;
+  opacity: 1;
+}
+:is(.landing-logo, .react-brand, .mini-footer-brand, .brand, .rtl-wordmark):is(:hover, :focus-visible) .rtl-wordmark-rest > i,
+.rtl-wordmark:is(:hover, :focus-visible) .rtl-wordmark-rest > i {
+  transform: translateX(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;

@@ -1,16 +1,13 @@
 import React from "react";
+import { BrandWordmark } from "../shared/components.jsx";
 export default function Footer({ onNavigate, inert }) {
  const switchTab = onNavigate;
- const switchAboutSubtab = () => onNavigate("about", "plans");
  return (<footer className="rtl-mini-footer" inert={inert}>
       <div className="mini-footer-container">
         
-        <button type="button" className="mini-footer-brand" onClick={() => { switchTab('find'); }} title="Ir al inicio">
-          <span className="mini-footer-logo-wrap">
-            <img src="/assets/logo-v1.webp" alt="RTL Logo" width="38" height="38" className="mini-footer-logo" />
-          </span>
+        <button type="button" className="mini-footer-brand" onClick={() => { switchTab('find'); }} title="Ir al inicio" aria-label="RTL, Reserva Tu Lugar — Ir al inicio">
           <span className="mini-footer-brand-text">
-            <strong>RTL • Reserva Tu Lugar</strong>
+            <BrandWordmark />
             <span className="mini-footer-tagline">Tu lugar en la cancha, reservado en segundos.</span>
           </span>
         </button>
@@ -39,9 +36,7 @@ export default function Footer({ onNavigate, inert }) {
           <span className="mini-footer-dot" aria-hidden="true">•</span>
           <button type="button" className="mini-footer-link" onClick={() => { switchTab('bookings'); }}>Mis Reservas</button>
           <span className="mini-footer-dot" aria-hidden="true">•</span>
-          <button type="button" className="mini-footer-link" onClick={() => { switchTab('about'); switchAboutSubtab('company');; }}>Sobre Nosotros</button>
-          <span className="mini-footer-dot" aria-hidden="true">•</span>
-          <button type="button" className="mini-footer-link" onClick={() => { switchTab('about'); switchAboutSubtab('plans');; }}>Planes para Clubes</button>
+          <button type="button" className="mini-footer-link" onClick={() => { switchTab('about'); }}>Sobre Nosotros</button>
           <span className="mini-footer-dot" aria-hidden="true">•</span>
           <a className="mini-footer-link" href="/clubes/">Para clubes</a>
         </nav>

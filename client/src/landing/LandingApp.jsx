@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { BrandWordmark } from '../shared/components.jsx';
 import ClubModal from '../public/ClubModal.jsx';
 import { PlanCards, PlanGuarantee } from '../public/PlanCards.jsx';
 import { customPlan } from '../public/clubPlans.js';
@@ -65,7 +66,7 @@ export default function LandingApp() {
 
   return <div className="landing" ref={root}>
     <header className="landing-header">
-      <a className="landing-logo" href="/"><img src="/assets/logo-mark.webp" alt="" width="42" height="42" /><span>RTL</span></a>
+      <a className="landing-logo" href="/" aria-label="RTL, Reserva Tu Lugar"><BrandWordmark /></a>
       <nav aria-label="Secciones"><a href="#funciones">Funciones</a><a href="#planes">Planes</a><button type="button" onClick={requestAccess}>Solicitar alta</button></nav>
     </header>
 
@@ -73,7 +74,6 @@ export default function LandingApp() {
       <section className="landing-hero" aria-labelledby="landing-title">
         <div className="landing-hero-inner">
           <div className="landing-hero-copy">
-            <span className="landing-tag">RTL PARA CLUBES</span>
             <h1 id="landing-title">Menos caos. Más canchas en juego.</h1>
             <p>Ordená reservas, canchas, clientes y cobros desde la computadora o el celular.</p>
             <div className="landing-actions"><button type="button" className="landing-button is-light" onClick={requestAccess}>Quiero sumar mi club</button><a className="landing-button is-outline" href="#planes">Ver planes</a></div>

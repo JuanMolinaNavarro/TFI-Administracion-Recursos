@@ -20,10 +20,10 @@ test('versioned catalog images are cached long term',()=>{
   assert.deepEqual(rule?.headers,[{key:'Cache-Control',value:'public, max-age=31536000, immutable'}]);
 });
 
-test('the interface uses the optimized logo',()=>{
-  for(const file of ['client/src/admin/AdminApp.jsx','client/src/public/Footer.jsx','client/src/superadmin/SuperAdminApp.jsx']){
-    assert.doesNotMatch(read(file),/assets\/logo\.png/,file);
-    assert.match(read(file),/\/assets\/logo-v1\.webp/,file);
+test('the interface uses the animated brand wordmark instead of image logos',()=>{
+  for(const file of ['client/src/admin/AdminApp.jsx','client/src/public/Footer.jsx','client/src/public/PublicApp.jsx','client/src/landing/LandingApp.jsx','client/src/superadmin/SuperAdminApp.jsx']){
+    assert.doesNotMatch(read(file),/assets\/logo\.png|assets\/logo-v1\.webp|assets\/logo-mark\.webp/,file);
+    assert.match(read(file),/<BrandWordmark\s*\/>/,file);
   }
   assert.ok(statSync(resolve(root,'assets/logo-v1.webp')).size<=20*1024);
 });

@@ -14,6 +14,9 @@ export function Modal({ title, children, onClose, className = '' }) {
   return <dialog ref={ref} className={className} onCancel={event => { event.preventDefault(); onClose(); }} onPointerDown={event => { pressedOutside.current = isOutside(event); }} onClick={event => { if (pressedOutside.current && isOutside(event)) onClose(); pressedOutside.current = false; }} aria-label={title}><div className="dialog-heading"><h2>{title}</h2><button type="button" className="icon-button" aria-label="Cerrar" onClick={onClose}><Icon name="close" /></button></div>{children}</dialog>;
 }
 export function Spinner() { return <span className="rtl-spinner" aria-hidden="true" />; }
+export function BrandWordmark() {
+  return <span className="rtl-wordmark" aria-hidden="true"><span className="rtl-wordmark-word">R<span className="rtl-wordmark-rest"><i>{'eserva '}</i></span></span><span className="rtl-wordmark-word">T<span className="rtl-wordmark-rest"><i>{'u '}</i></span></span><span className="rtl-wordmark-word">L<span className="rtl-wordmark-rest"><i>ugar</i></span></span></span>;
+}
 export function Busy({ children }) { return <span className="rtl-busy"><Spinner />{children}</span>; }
 export function InlineLoader({ label }) { return <div className="rtl-inline-loader" role="status"><Spinner />{label}</div>; }
 export function PageLoader({ label }) { return <div className="rtl-loader rtl-page-loader" role="status"><span className="rtl-loader-mark"><img src="/assets/logo-mark.webp" alt="" width="64" height="64" /></span><span className="rtl-loader-label">{label}</span></div>; }

@@ -44,9 +44,8 @@ main { max-width: 1640px; margin: auto; padding: 28px 40px 0; }
   background: var(--bg-color);
   box-shadow: 6px 0 14px var(--shadow-dark);
 }
-.brand { display: flex; align-items: center; gap: 11px; padding: 0 6px; font: 800 26px/1.1 var(--font-brand); letter-spacing: .02em; }
-.brand img { width: 48px; height: 48px; object-fit: contain; }
-.brand-caption { display: block; margin-top: 3px; color: var(--text-secondary); font: 600 11px var(--font-body); letter-spacing: .05em; }
+.brand { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; padding: 0 6px; font: 800 1.35rem/1.25 var(--font-brand); }
+.access-card .brand { font-size: 1.55rem; }
 .workspace { display: flex; align-items: center; gap: 10px; margin-top: 28px; padding: 12px; border-radius: var(--border-radius-sm); box-shadow: var(--shadow-inset-sm); font-size: 13px; font-weight: 700; }
 .workspace > div { min-width: 0; }
 .workspace #session-court-name { display: block; overflow-wrap: anywhere; line-height: 1.4; }
