@@ -19,3 +19,11 @@ test('versioned catalog images are cached long term',()=>{
   const rule=JSON.parse(read('vercel.json')).headers.find(item=>item.source.startsWith('/assets/'));
   assert.deepEqual(rule?.headers,[{key:'Cache-Control',value:'public, max-age=31536000, immutable'}]);
 });
+
+test('the interface uses the optimized logo',()=>{
+  for(const file of ['client/src/admin/AdminApp.jsx','client/src/public/Footer.jsx','client/src/superadmin/SuperAdminApp.jsx']){
+    assert.doesNotMatch(read(file),/assets\/logo\.png/,file);
+    assert.match(read(file),/\/assets\/logo-v1\.webp/,file);
+  }
+  assert.ok(statSync(resolve(root,'assets/logo-v1.webp')).size<=20*1024);
+});

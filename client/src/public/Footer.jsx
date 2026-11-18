@@ -7,7 +7,7 @@ export default function Footer({ onNavigate, inert }) {
         
         <button type="button" className="mini-footer-brand" onClick={() => { switchTab('find'); }} title="Ir al inicio">
           <span className="mini-footer-logo-wrap">
-            <img src="/assets/logo.png" alt="RTL Logo" width="38" height="38" className="mini-footer-logo" />
+            <img src="/assets/logo-v1.webp" alt="RTL Logo" width="38" height="38" className="mini-footer-logo" />
           </span>
           <span className="mini-footer-brand-text">
             <strong>RTL • Reserva Tu Lugar</strong>
