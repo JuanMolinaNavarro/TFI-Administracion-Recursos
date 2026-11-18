@@ -81,7 +81,7 @@ async function body(req) {
 function createApp({
   db = openDatabase(),
   secure = process.env.COOKIE_SECURE === 'true',
-  origin = process.env.APP_ORIGIN || process.env.RENDER_EXTERNAL_URL,
+  origin = process.env.APP_ORIGIN || process.env.RENDER_EXTERNAL_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined),
   frontend = null
 } = {}) {
   if (process.env.NODE_ENV === 'production' && (!secure || !origin)) throw new Error('Producción requiere APP_ORIGIN (o RENDER_EXTERNAL_URL) y COOKIE_SECURE=true detrás de HTTPS.');

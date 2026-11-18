@@ -12,7 +12,8 @@
     "test": "node --test server/test/*.test.cjs",
     "admin:create": "node server/create-admin.cjs",
     "superadmin:create": "node server/create-superadmin.cjs",
-    "db:migrate": "node server/migrate-sqlite.cjs"
+    "db:migrate": "node server/migrate-sqlite.cjs",
+    "build:vercel": "vite build && node scripts/copy-assets.cjs"
   },
   "dependencies": {
     "pg": "^8.23.1",

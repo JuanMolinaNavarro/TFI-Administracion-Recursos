@@ -11,6 +11,6 @@ function postgresConfig(){
   const caFile=process.env.DATABASE_CA_FILE||resolve(__dirname,'certs/supabase-ca.crt');
   if(!existsSync(resolve(caFile)))throw new Error('Falta el certificado CA: descargalo de Database Settings > SSL Configuration en Supabase y guardalo en server/certs/supabase-ca.crt.');
   ssl.ca=require('node:fs').readFileSync(resolve(caFile),'utf8');
-  return {connectionString:url.toString(),ssl,connectionTimeoutMillis:15000,max:5};
+  return {connectionString:url.toString(),ssl,connectionTimeoutMillis:15000,max:Number(process.env.DATABASE_POOL_MAX)||5};
 }
 module.exports={loadEnvironment,postgresConfig};
