@@ -6,6 +6,7 @@ import Footer from './Footer.jsx';
 import BookingModal from './BookingModal.jsx';
 import ClubModal from './ClubModal.jsx';
 import TicketModal from './TicketModal.jsx';
+import '../styles/theme.css';
 import '../styles/public.css';
 import '../styles/ticket.css';
 import '../styles/brand.css';

@@ -8,7 +8,7 @@
   color: var(--text-primary);
   text-align: left;
 }
-.react-brand:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 3px; }
+.react-brand:focus-visible { outline: 3px solid var(--accent-text); outline-offset: 3px; }
 .react-brand-mark {
   display: block;
   flex: none;
@@ -27,7 +27,7 @@
 .react-brand:active .react-brand-mark { transform: scale(.96); }
 .react-brand-text { display: grid; gap: 1px; }
 .react-brand-text strong {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-brand);
   font-size: 1.55rem;
   font-weight: 800;
   letter-spacing: .05em;

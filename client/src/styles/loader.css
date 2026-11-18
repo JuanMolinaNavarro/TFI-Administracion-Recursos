@@ -22,7 +22,7 @@
   animation: rtl-spinner-turn .7s linear infinite;
 }
 .rtl-busy { display: inline-flex; align-items: center; justify-content: center; gap: .5em; }
-.rtl-inline-loader { display: flex; align-items: center; justify-content: center; gap: .6em; padding: 32px 16px; color: #66736e; }
+.rtl-inline-loader { display: flex; align-items: center; justify-content: center; gap: .6em; padding: 32px 16px; color: var(--text-secondary); }
 .rtl-page-loader { min-height: 70vh; }
 
 .rtl-skeleton {

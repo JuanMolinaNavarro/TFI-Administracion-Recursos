@@ -5,15 +5,15 @@ export default function Footer({ onNavigate, inert }) {
  return (<footer className="rtl-mini-footer" inert={inert}>
       <div className="mini-footer-container">
         
-        <div className="mini-footer-brand" onClick={() => { switchTab('find'); }} style={{"cursor": "pointer"}} title="Ir al inicio">
-          <div className="mini-footer-logo-wrap">
-            <img src="/assets/logo.png" alt="RTL Logo" className="mini-footer-logo" />
-          </div>
-          <div className="mini-footer-brand-text">
+        <button type="button" className="mini-footer-brand" onClick={() => { switchTab('find'); }} title="Ir al inicio">
+          <span className="mini-footer-logo-wrap">
+            <img src="/assets/logo.png" alt="RTL Logo" width="38" height="38" className="mini-footer-logo" />
+          </span>
+          <span className="mini-footer-brand-text">
             <strong>RTL • Reserva Tu Lugar</strong>
-            <p>Tu lugar en la cancha, reservado en segundos.</p>
-          </div>
-        </div>
+            <span className="mini-footer-tagline">Tu lugar en la cancha, reservado en segundos.</span>
+          </span>
+        </button>
 
         <address className="mini-footer-contact" aria-label="Información de contacto">
           <h2>Hablemos de tu próximo partido</h2>
