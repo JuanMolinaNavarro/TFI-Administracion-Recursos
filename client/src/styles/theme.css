@@ -142,6 +142,64 @@ input:-webkit-autofill:focus {
 .rtl-wordmark:is(:hover, :focus-visible) .rtl-wordmark-rest > i {
   transform: translateX(0);
 }
+.rtl-wordmark-ball-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  width: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.rtl-wordmark-ball {
+  position: absolute;
+  left: 4px;
+  bottom: .08em;
+  display: inline-grid;
+  place-items: center;
+  font-size: .78em;
+  line-height: 1;
+  opacity: 0;
+  transform: translate3d(-10px, 0, 0) scale(.5);
+}
+.rtl-wordmark-ball-shadow {
+  position: absolute;
+  left: 6px;
+  bottom: -.06em;
+  width: .72em;
+  height: .16em;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  transform: translateX(-10px) scaleX(.4);
+  filter: blur(1px);
+}
+:is(.landing-logo, .react-brand, .mini-footer-brand, .brand, .rtl-wordmark):is(:hover, :focus-visible) .rtl-wordmark-ball,
+.rtl-wordmark:is(:hover, :focus-visible) .rtl-wordmark-ball {
+  animation: rtl-ball-end-bounce .78s cubic-bezier(.22, .61, .36, 1) .08s forwards;
+}
+:is(.landing-logo, .react-brand, .mini-footer-brand, .brand, .rtl-wordmark):is(:hover, :focus-visible) .rtl-wordmark-ball-shadow,
+.rtl-wordmark:is(:hover, :focus-visible) .rtl-wordmark-ball-shadow {
+  animation: rtl-ball-end-shadow .78s cubic-bezier(.22, .61, .36, 1) .08s forwards;
+}
+@keyframes rtl-ball-end-bounce {
+  0% { opacity: 0; transform: translate3d(-8px, -4px, 0) rotate(-40deg) scale(.6); }
+  18% { opacity: 1; transform: translate3d(2px, -22px, 0) rotate(90deg) scale(1); }
+  38% { opacity: 1; transform: translate3d(8px, 0, 0) rotate(200deg) scale(1.12, .86); }
+  44% { transform: translate3d(10px, -2px, 0) rotate(230deg) scale(.95, 1.05); }
+  58% { transform: translate3d(13px, -12px, 0) rotate(310deg) scale(1); }
+  74% { transform: translate3d(16px, 0, 0) rotate(390deg) scale(1.07, .91); }
+  86% { transform: translate3d(18px, -5px, 0) rotate(440deg) scale(1); }
+  100% { opacity: 1; transform: translate3d(19px, 0, 0) rotate(480deg) scale(1); }
+}
+@keyframes rtl-ball-end-shadow {
+  0% { opacity: 0; transform: translateX(-8px) scaleX(.4); }
+  18% { opacity: .16; transform: translateX(2px) scaleX(.55); }
+  38% { opacity: .36; transform: translateX(8px) scaleX(1.15); }
+  58% { opacity: .2; transform: translateX(13px) scaleX(.7); }
+  74% { opacity: .34; transform: translateX(16px) scaleX(1.08); }
+  86% { opacity: .24; transform: translateX(18px) scaleX(.85); }
+  100% { opacity: .32; transform: translateX(19px) scaleX(1); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -15,7 +15,7 @@ export function Modal({ title, children, onClose, className = '' }) {
 }
 export function Spinner() { return <span className="rtl-spinner" aria-hidden="true" />; }
 export function BrandWordmark() {
-  return <span className="rtl-wordmark" aria-hidden="true"><span className="rtl-wordmark-word">R<span className="rtl-wordmark-rest"><i>{'eserva '}</i></span></span><span className="rtl-wordmark-word">T<span className="rtl-wordmark-rest"><i>{'u '}</i></span></span><span className="rtl-wordmark-word">L<span className="rtl-wordmark-rest"><i>ugar</i></span></span></span>;
+  return <span className="rtl-wordmark" aria-hidden="true"><span className="rtl-wordmark-word">R<span className="rtl-wordmark-rest"><i>{'eserva '}</i></span></span><span className="rtl-wordmark-word">T<span className="rtl-wordmark-rest"><i>{'u '}</i></span></span><span className="rtl-wordmark-word">L<span className="rtl-wordmark-rest"><i>ugar</i></span></span><span className="rtl-wordmark-ball-wrap"><span className="rtl-wordmark-ball-shadow" /><i className="fa-solid fa-futbol rtl-wordmark-ball" /></span></span>;
 }
 export function Busy({ children }) { return <span className="rtl-busy"><Spinner />{children}</span>; }
 export function InlineLoader({ label }) { return <div className="rtl-inline-loader" role="status"><Spinner />{label}</div>; }
