@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="RTL — Reservas y administración de canchas deportivas." />
     <meta name="theme-color" content="#eef2f7" />
+    <link rel="icon" type="image/svg+xml" href="/assets/rtl-mark.svg" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png" />
@@ -19,17 +20,17 @@
       #boot-splash.is-done { opacity: 0; visibility: hidden; }
       .rtl-loader { display: grid; place-content: center; justify-items: center; gap: 22px; color: #566070; font: 600 .85rem 'Plus Jakarta Sans', system-ui, sans-serif; animation: rtl-loader-in .25s ease .12s both; }
       .rtl-loader-mark { position: relative; display: block; width: 64px; height: 64px; animation: rtl-loader-breathe 1.5s ease-in-out infinite; }
-      .rtl-loader-mark img { display: block; width: 100%; height: 100%; border-radius: 17%; box-shadow: 0 6px 16px #1f27331f; }
-      .rtl-loader-mark::before { content: ''; position: absolute; inset: -11px; border-radius: 50%; background: conic-gradient(#10b98100 35%, #10b981); -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 2.5px)); mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 2.5px)); animation: rtl-loader-orbit .9s linear infinite; }
+      .rtl-loader-mark .rtl-mark { display: block; width: 100%; height: 100%; filter: drop-shadow(0 6px 8px #1f27332e); }
+      .rtl-loader-mark .rtl-mark-ball { transform-box: fill-box; transform-origin: center; animation: rtl-loader-ball 1.5s ease-in-out infinite; }
       @keyframes rtl-loader-in { from { opacity: 0; } }
       @keyframes rtl-loader-breathe { 50% { transform: scale(.94); } }
-      @keyframes rtl-loader-orbit { to { transform: rotate(360deg); } }
-      @media (prefers-reduced-motion: reduce) { .rtl-loader, .rtl-loader-mark, .rtl-loader-mark::before { animation: none; } }
+      @keyframes rtl-loader-ball { 50% { transform: scale(.72); } }
+      @media (prefers-reduced-motion: reduce) { .rtl-loader, .rtl-loader-mark, .rtl-loader-mark .rtl-mark-ball { animation: none; } }
     </style>
     <noscript><style>#boot-splash { display: none; }</style></noscript>
   </head>
   <body>
-    <div id="boot-splash"><div class="rtl-loader" role="status"><span class="rtl-loader-mark"><img src="/assets/logo-mark.webp" alt="" width="64" height="64" /></span><span class="rtl-loader-label">Cargando RTL…</span></div></div>
+    <div id="boot-splash"><div class="rtl-loader" role="status"><span class="rtl-loader-mark"><svg class="rtl-mark" viewBox="36 36 440 440" width="64" height="64" aria-hidden="true" focusable="false"><rect x="40" y="96" width="432" height="376" rx="104" fill="#65f1c2"/><g fill="#0a2e24"><rect x="136" y="40" width="60" height="112" rx="30"/><rect x="316" y="40" width="60" height="112" rx="30"/></g><g fill="none" stroke="#0a2e24" stroke-width="21"><rect x="100" y="200" width="312" height="207" rx="33"/><path d="M256 200v207"/><circle class="rtl-mark-ball" cx="256" cy="303.5" r="40"/></g></svg></span><span class="rtl-loader-label">Cargando RTL…</span></div></div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

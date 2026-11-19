@@ -1,11 +1,12 @@
 import React from "react";
-import { BrandWordmark } from "../shared/components.jsx";
+import { BrandMark, BrandWordmark } from "../shared/components.jsx";
 export default function Footer({ onNavigate, inert }) {
  const switchTab = onNavigate;
  return (<footer className="rtl-mini-footer" inert={inert}>
       <div className="mini-footer-container">
         
         <button type="button" className="mini-footer-brand" onClick={() => { switchTab('find'); }} title="Ir al inicio" aria-label="RTL, Reserva Tu Lugar — Ir al inicio">
+          <BrandMark className="mini-footer-mark" />
           <span className="mini-footer-brand-text">
             <BrandWordmark />
             <span className="mini-footer-tagline">Tu lugar en la cancha, reservado en segundos.</span>

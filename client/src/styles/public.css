@@ -1293,7 +1293,23 @@ header {
 }
 
 .about-intro {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+.about-mark {
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(4px 6px 8px var(--shadow-dark));
+}
+
+@media (max-width: 560px) {
+  .about-intro { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .about-mark { width: 72px; height: 72px; }
 }
 
 .about-intro h2 {
@@ -1516,24 +1532,11 @@ header {
   text-align: left;
 }
 
-.mini-footer-logo-wrap {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--border-radius-sm);
-  background: var(--bg-color);
-  box-shadow: var(--shadow-raised-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+.mini-footer-mark {
   flex-shrink: 0;
-}
-
-.mini-footer-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  mix-blend-mode: multiply;
+  width: 44px;
+  height: 44px;
+  filter: drop-shadow(2px 3px 4px var(--shadow-dark));
 }
 
 .mini-footer-brand-text strong,
@@ -1729,8 +1732,7 @@ header {
   }
 
   .mini-footer-brand {
-    flex-direction: column;
-    text-align: center;
+    text-align: left;
   }
 
   .mini-footer-tagline {

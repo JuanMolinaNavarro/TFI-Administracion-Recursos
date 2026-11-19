@@ -1,4 +1,5 @@
 import React from "react";
+import { BrandMark } from "../shared/components.jsx";
 
 const PLAYER_BENEFITS = [
   'Buscá canchas por zona, deporte y servicios.',
@@ -34,10 +35,13 @@ export default function About({ onFind }) {
   return (
     <section id="view-about" className="view-container active about-page" aria-labelledby="about-title">
       <header className="about-intro">
-        <h2 id="about-title">Sobre nosotros</h2>
-        <p className="about-lead">
-          RTL (Reserva Tu Lugar) es una plataforma para reservar canchas en tiempo real y gestionar complejos deportivos en Argentina. Nacimos en 2026 en Tucumán.
-        </p>
+        <BrandMark className="about-mark" />
+        <div>
+          <h2 id="about-title">Sobre nosotros</h2>
+          <p className="about-lead">
+            RTL (Reserva Tu Lugar) es una plataforma para reservar canchas en tiempo real y gestionar complejos deportivos en Argentina. Nacimos en 2026 en Tucumán.
+          </p>
+        </div>
       </header>
 
       <div className="about-panel about-statements">
