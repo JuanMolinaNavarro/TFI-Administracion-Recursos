@@ -30,6 +30,9 @@ const {
   verifyPassword,
   hashPassword
 } = require('./auth.cjs');
+const {
+  defaultMailer
+} = require('./mailer.cjs');
 class HttpError extends Error {
   constructor(status, message) {
     super(message);
@@ -88,7 +91,8 @@ function createApp({
   db = openDatabase(),
   secure = process.env.COOKIE_SECURE === 'true',
   origin = process.env.APP_ORIGIN || process.env.RENDER_EXTERNAL_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined),
-  frontend = null
+  frontend = null,
+  mailer = defaultMailer
 } = {}) {
   if (process.env.NODE_ENV === 'production' && (!secure || !origin)) throw new Error('Producción requiere APP_ORIGIN (o RENDER_EXTERNAL_URL) y COOKIE_SECURE=true detrás de HTTPS.');
   const limits = new Map();
@@ -390,7 +394,17 @@ function createApp({
             plan: text(data.plan, 'Plan', 40)
           };
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(record.email)) fail(400, 'Correo inválido.');
-          await db.prepare('INSERT INTO club_requests(id,created_at,data) VALUES(?,?,?)').run(randomUUID(), new Date().toISOString(), JSON.stringify(record));
+          const requestId = randomUUID();
+          const createdAt = new Date().toISOString();
+          await db.prepare('INSERT INTO club_requests(id,created_at,data) VALUES(?,?,?)').run(requestId, createdAt, JSON.stringify(record));
+          if (mailer?.sendClubRequestEmail) {
+            try {
+              const result = await mailer.sendClubRequestEmail(record, { id: requestId, createdAt });
+              if (result?.skipped) console.warn('Solicitud de alta guardada sin envío de correo (falta configurar SMTP_USER/SMTP_PASS).');
+            } catch (mailError) {
+              console.error('No se pudo enviar el correo de solicitud de alta:', mailError.message || mailError);
+            }
+          }
           return json(res, 201, {
             ok: true
           });

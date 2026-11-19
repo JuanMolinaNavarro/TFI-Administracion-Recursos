@@ -10,11 +10,11 @@ const {hashPassword}=require('../auth.cjs');
 const password='Test-only-password-123';
 const day=new Date(Date.now()+2*86400000).toISOString().slice(0,10);
 const payload=(resourceId='padel-3-court-1')=>({resourceId,date:day,slot:'18:00',duration:60,userName:'Cliente de prueba',userPhone:'3810000000',userEmail:'test@example.com'});
-async function fixture(t){
+async function fixture(t, options = {}){
   const folder=mkdtempSync(join(tmpdir(),'rtl-api-')),filename=join(folder,'test.sqlite');
   const db=openDatabase(filename),hashed=await hashPassword(password);
   for(const [id,email,complex]of [['one','one@example.com','padel-3'],['two','two@example.com','padel-1']])db.prepare('INSERT INTO admins(id,email,password_hash,complex_id) VALUES(?,?,?,?)').run(id,email,hashed,complex);
-  const {server}=createApp({db});server.listen(0,'127.0.0.1');await once(server,'listening');
+  const {server}=createApp({db,...options});server.listen(0,'127.0.0.1');await once(server,'listening');
   t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));db.close();rmSync(folder,{recursive:true,force:true});});
   const base=`http://127.0.0.1:${server.address().port}`;
   function client(){const jar=new Map();return async(path,method='GET',data,extraHeaders={})=>{
@@ -90,4 +90,18 @@ test('Repeated failed logins are rate limited',async t=>{
   const {client}=await fixture(t),browser=client();
   for(let n=0;n<15;n++)assert.equal((await browser('/api/auth/login','POST',{email:'missing@example.com',password:'incorrect-password'})).status,401);
   assert.equal((await browser('/api/auth/login','POST',{email:'one@example.com',password})).status,429);
+});
+test('Club request sends email notification and still persists if mailer fails',async t=>{
+  const sent=[];
+  const {client,db}=await fixture(t,{mailer:{async sendClubRequestEmail(record,meta){sent.push({record,meta});if(record.clubName==='Club Fallo')throw new Error('SMTP down');return {sent:true,skipped:false};}}});
+  const guest=client();
+  const ok=await guest('/api/club-requests','POST',{clubName:'Club Exito',owner:'Laura',phone:'3815550001',email:'laura@club.com',courts:4,plan:'Pro'});
+  assert.equal(ok.status,201);
+  assert.equal(sent.length,1);
+  assert.equal(sent[0].record.clubName,'Club Exito');
+  assert.equal(sent[0].record.plan,'Pro');
+  assert.ok(sent[0].meta.id);
+  const fallback=await guest('/api/club-requests','POST',{clubName:'Club Fallo',owner:'Pedro',phone:'3815550002',email:'pedro@club.com',courts:2,plan:'Personalizado'});
+  assert.equal(fallback.status,201);
+  assert.equal(db.prepare('SELECT COUNT(*) as n FROM club_requests').get().n,2);
 });
