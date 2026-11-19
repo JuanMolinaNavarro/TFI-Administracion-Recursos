@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { request, localDate } from '../shared/api.js';
-import { Icon, Modal, Busy, BrandWordmark, PageLoader, ErrorMessage } from '../shared/components.jsx';
+import { Icon, Modal, Busy, BrandMark, BrandWordmark, PageLoader, ErrorMessage } from '../shared/components.jsx';
 import '../styles/theme.css';
 import '../styles/admin.css';
 import './superadmin.css';
@@ -18,7 +18,7 @@ export default function SuperAdminApp(){
   async function navigate(key){setView(key);setDrawer(false);setError(null);if(key==='audit'){try{setAudit(await request('/superadmin/audit'));}catch(e){setError(e);}}}
   async function saved(result){setModal(result.credentials?{type:'credentials',credentials:result.credentials}:result.message?{type:'reminder-preview',record:result}:null);await refresh();}
   if(loading)return <main><PageLoader label="Cargando gestión de RTL…"/></main>;
-  if(!user)return <section className="session-access"><div className="access-card"><a className="brand" href="/" aria-label="RTL, Reserva Tu Lugar"><BrandWordmark /></a><p className="eyebrow">ACCESO EXCLUSIVO DEL EQUIPO RTL</p><h1>Un lugar para<br/>hacer crecer RTL.</h1><p className="access-intro">Administrá complejos, suscripciones y cuentas de tu plataforma.</p><form onSubmit={login}><label>Correo del equipo RTL<input name="email" type="email" autoComplete="username" required maxLength={150}/></label><label>Contraseña<input name="password" type="password" autoComplete="current-password" required maxLength={256}/></label><ErrorMessage error={error}/><button className="button primary" disabled={saving}>{saving?<Busy>Ingresando…</Busy>:'Ingresar a RTL'}</button></form><p className="access-note">Las cuentas de los complejos no tienen acceso a este panel.</p><a className="text-button" href="/">Volver al sitio público</a></div></section>;
+  if(!user)return <section className="session-access"><div className="access-card"><a className="brand" href="/" aria-label="RTL, Reserva Tu Lugar"><BrandMark className="access-brand-mark" /><BrandWordmark /></a><p className="eyebrow">ACCESO EXCLUSIVO DEL EQUIPO RTL</p><h1>Un lugar para<br/>hacer crecer RTL.</h1><p className="access-intro">Administrá complejos, suscripciones y cuentas de tu plataforma.</p><form onSubmit={login}><label>Correo del equipo RTL<input name="email" type="email" autoComplete="username" required maxLength={150}/></label><label>Contraseña<input name="password" type="password" autoComplete="current-password" required maxLength={256}/></label><ErrorMessage error={error}/><button className="button primary" disabled={saving}>{saving?<Busy>Ingresando…</Busy>:'Ingresar a RTL'}</button></form><p className="access-note">Las cuentas de los complejos no tienen acceso a este panel.</p><a className="text-button" href="/">Volver al sitio público</a></div></section>;
   const sections = {
     complexes: ['Nuestros complejos', 'Espacios deportivos y cuentas administradoras que forman parte de RTL.'],
     subscriptions: ['Suscripciones', 'Planes, vencimientos y seguimiento de renovaciones.'],
