@@ -15,7 +15,8 @@
   scrollbar-gutter: auto;
 }
 .ticket-dialog[open] { display: flex; flex-direction: column; }
-.ticket-dialog .dialog-heading { flex: none; align-items: center; margin-bottom: 10px; padding-bottom: 0; }
+.ticket-dialog .dialog-heading { flex: none; align-items: center; border-bottom: 0; }
+.ticket-dialog .dialog-body { display: flex; flex-direction: column; overflow: hidden; padding-top: 0; }
 
 .ticket-stage {
   flex: 1 1 auto;

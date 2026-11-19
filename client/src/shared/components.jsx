@@ -11,7 +11,7 @@ export function Modal({ title, children, onClose, className = '' }) {
     dialog.showModal();
     return () => { dialog.close(); if (opener?.isConnected) opener.focus({ preventScroll: true }); };
   }, []);
-  return <dialog ref={ref} className={className} onCancel={event => { event.preventDefault(); onClose(); }} onPointerDown={event => { pressedOutside.current = isOutside(event); }} onClick={event => { if (pressedOutside.current && isOutside(event)) onClose(); pressedOutside.current = false; }} aria-label={title}><div className="dialog-heading"><h2>{title}</h2><button type="button" className="icon-button" aria-label="Cerrar" onClick={onClose}><Icon name="close" /></button></div>{children}</dialog>;
+  return <dialog ref={ref} className={className} onCancel={event => { event.preventDefault(); onClose(); }} onPointerDown={event => { pressedOutside.current = isOutside(event); }} onClick={event => { if (pressedOutside.current && isOutside(event)) onClose(); pressedOutside.current = false; }} aria-label={title}><div className="dialog-heading"><h2>{title}</h2><button type="button" className="icon-button" aria-label="Cerrar" onClick={onClose}><Icon name="close" /></button></div><div className="dialog-body">{children}</div></dialog>;
 }
 export function Spinner() { return <span className="rtl-spinner" aria-hidden="true" />; }
 export function BrandWordmark() {
