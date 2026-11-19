@@ -21,7 +21,8 @@ html { scroll-behavior: smooth; }
   padding: 20px clamp(20px, 5vw, 56px);
   color: var(--on-accent);
 }
-.landing-logo { display: inline-flex; align-items: center; min-height: 44px; font-size: 1.55rem; }
+.landing-logo { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 1.55rem; }
+.landing-header-mark { flex-shrink: 0; width: 34px; height: 34px; filter: drop-shadow(0 4px 10px rgb(3 41 31 / .22)); }
 .landing-header nav { display: flex; align-items: center; gap: clamp(12px, 2vw, 24px); font-size: .9rem; font-weight: 700; }
 .landing-header nav a { display: inline-flex; align-items: center; min-height: 44px; }
 .landing-header nav button { min-height: 44px; padding: 0 16px; border: 0; border-radius: var(--border-radius-sm); background: var(--bg-color); color: var(--accent-text); cursor: pointer; font-weight: 800; transition: var(--transition-smooth); }
@@ -83,9 +84,12 @@ html { scroll-behavior: smooth; }
 
 /* Cierre y pie */
 .landing-close { max-width: 1208px; width: calc(100% - clamp(40px, 10vw, 112px)); margin: clamp(48px, 7vw, 80px) auto 0; padding: clamp(40px, 6vw, 68px) 24px; border-radius: 32px; background: var(--accent-gradient); color: var(--on-accent); text-align: center; }
+.landing-close-mark { display: block; width: 56px; height: 56px; margin: 0 auto 16px; filter: drop-shadow(0 6px 14px rgb(3 41 31 / .22)); }
 .landing-close h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.035em; }
 .landing-close p { margin: 10px 0 22px; font-weight: 600; }
 .landing-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; width: calc(100% - clamp(40px, 10vw, 112px)); padding-block: 28px; color: var(--text-secondary); font-size: .85rem; }
+.landing-footer-brand { display: inline-flex; align-items: center; gap: 10px; }
+.landing-footer-mark { flex-shrink: 0; width: 32px; height: 32px; }
 .landing-footer nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
 .landing-footer a { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-text); font-weight: 700; }
 

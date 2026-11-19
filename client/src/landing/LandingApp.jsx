@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BrandWordmark } from '../shared/components.jsx';
+import { BrandMark, BrandWordmark } from '../shared/components.jsx';
 import ClubModal from '../public/ClubModal.jsx';
 import { PlanCards, PlanGuarantee } from '../public/PlanCards.jsx';
 import { customPlan } from '../public/clubPlans.js';
@@ -66,7 +66,7 @@ export default function LandingApp() {
 
   return <div className="landing" ref={root}>
     <header className="landing-header">
-      <a className="landing-logo" href="/" aria-label="RTL, Reserva Tu Lugar"><BrandWordmark /></a>
+      <a className="landing-logo" href="/" aria-label="RTL, Reserva Tu Lugar"><BrandMark className="landing-header-mark" /><BrandWordmark /></a>
       <nav aria-label="Secciones"><a href="#funciones">Funciones</a><a href="#planes">Planes</a><button type="button" onClick={requestAccess}>Solicitar alta</button></nav>
     </header>
 
@@ -109,13 +109,14 @@ export default function LandingApp() {
       </section>
 
       <section className="landing-close" aria-labelledby="cierre-title">
+        <BrandMark className="landing-close-mark" />
         <h2 id="cierre-title">Sumá tu club a RTL</h2>
         <p>Dejanos tus datos y te ayudamos a dar el primer paso.</p>
         <button type="button" className="landing-button is-light" onClick={requestAccess}>Solicitar alta</button>
       </section>
     </main>
 
-    <footer className="landing-footer"><span>© 2026 RTL (Reserva Tu Lugar)</span><nav aria-label="Enlaces"><a href="/">Ir al sitio de reservas</a><a href="https://wa.me/5493816443413" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a></nav></footer>
+    <footer className="landing-footer"><div className="landing-footer-brand"><BrandMark className="landing-footer-mark" /><span>© 2026 RTL (Reserva Tu Lugar)</span></div><nav aria-label="Enlaces"><a href="/">Ir al sitio de reservas</a><a href="https://wa.me/5493816443413" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a></nav></footer>
     {plan && <ClubModal plan={plan} onClose={() => setPlan(null)} />}
   </div>;
 }
