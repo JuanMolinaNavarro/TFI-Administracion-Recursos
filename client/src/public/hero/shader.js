@@ -19,7 +19,7 @@ uniform vec4 uCam;   // cx, horizonte, A, s0
 uniform vec3 uWave;  // origen x/y y radio actual
 uniform vec2 uWaveShape; // ancho del frente y ruido
 uniform vec4 uPad;   // izquierda, derecha, arriba, abajo
-uniform float uTime, uFade, uCopyHalf;
+uniform float uTime, uCopyHalf;
 
 const float DEPTH = 50.;
 const float LEVELS = 11.;
@@ -110,13 +110,9 @@ void main() {
   col = mix(BG, col, smoothstep(mix(hy - peak * 2.5, 0., aside), mix(hy - peak * .55, hy * .66, aside), px.y));
 
   // Onda de transformación: umbral Bayer más lluvia de micropuntos en el frente.
-  float wave = uFade;
-  float front = 0.;
-  if (uFade < 0.) {
-    float organic = (fbm(px * .032 + 3.) - .5) * uWaveShape.y;
-    wave = smoothstep(0., uWaveShape.x, uWave.z - distance(px, uWave.xy) + organic);
-    front = wave * (1. - wave) * 4.;
-  }
+  float organic = (fbm(px * .032 + 3.) - .5) * uWaveShape.y;
+  float wave = smoothstep(0., uWaveShape.x, uWave.z - distance(px, uWave.xy) + organic);
+  float front = wave * (1. - wave) * 4.;
   float rain = hash(vec2(cell.x, 3.));
   vec2 scatter = px + vec2((hash(cell + floor(t * 12.)) - .5) * front * 5., -front * rain * 15.);
   bool nextScene = dither < wave;

@@ -31,7 +31,7 @@
 .morph-hero-copy {
   width: min(100%, 50rem);
   margin: 0 auto;
-  padding: 1.25rem 1.25rem 0;
+  padding: 1.25rem 1.25rem .75rem;
   text-align: center;
 }
 
@@ -57,97 +57,10 @@
   text-wrap: balance;
 }
 
-.morph-hero-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-  margin-top: 1.1rem;
-}
-
-.morph-hero-pills {
-  display: flex;
-  gap: .2rem;
-  padding: .25rem;
-  border: 1px solid rgb(255 255 255 / .55);
-  border-radius: 999px;
-  background: var(--bg-color);
-  box-shadow: var(--shadow-inset-sm);
-}
-
-.morph-hero-pills button,
-.morph-hero-pause {
-  border: 0;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.morph-hero-pills button {
-  position: relative;
-  min-height: 40px;
-  padding: 0 1rem;
-  overflow: hidden;
-  border-radius: 999px;
-  font-size: .86rem;
-  font-weight: 700;
-}
-
-.morph-hero-pills button:hover {
-  color: var(--text-primary);
-}
-
-.morph-hero-pills button.is-active {
-  background: var(--bg-color);
-  color: var(--accent-text);
-  box-shadow: var(--shadow-raised-xs);
-}
-
-.morph-hero-pills button.is-active::after {
-  content: '';
-  position: absolute;
-  right: 14px;
-  bottom: 5px;
-  left: 14px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent-dark);
-  transform: scaleX(var(--hero-progress, 0));
-  transform-origin: left;
-}
-
-.morph-hero-pause {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--bg-color);
-  box-shadow: var(--shadow-raised-xs);
-}
-
-.morph-hero-pause:hover {
-  color: var(--accent-text);
-}
-
-.morph-hero-pause svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
-}
-
 .morph-hero + .search-filter-section {
   position: relative;
   z-index: 2;
   margin-top: -3.5rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .morph-hero-pause {
-    display: none;
-  }
 }
 
 @media (max-width: 600px) {
@@ -158,26 +71,7 @@
   }
 
   .morph-hero-copy {
-    padding: 1rem 1rem 0;
-  }
-
-  .morph-hero-controls {
-    gap: .3rem;
-  }
-
-  .morph-hero-pills {
-    min-width: 0;
-    gap: 0;
-  }
-
-  .morph-hero-pills button {
-    padding: 0 .55rem;
-    font-size: .76rem;
-  }
-
-  .morph-hero-pills button.is-active::after {
-    right: 8px;
-    left: 8px;
+    padding: 1rem 1rem .75rem;
   }
 
   .morph-hero + .search-filter-section {

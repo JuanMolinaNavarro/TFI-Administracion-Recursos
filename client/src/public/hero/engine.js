@@ -1,11 +1,10 @@
 import { bakeWorld } from './bake.js';
 import { createLife } from './life.js';
 import { FRAGMENT_SHADER, VERTEX_SHADER } from './shader.js';
-import { SCENE_COUNT, clamp, makeCamera, padBox } from './world.js';
+import { SCENE_COUNT, makeCamera, padBox } from './world.js';
 
 const SCENE_SECONDS = 4;
 const WAVE_SECONDS = 1.55;
-const SOFT_SECONDS = 0.45;
 const FRAME_MS = 1000 / 30;
 const TEXTURE_UNITS = ['uEnv', 'uMask', 'uCourtA', 'uCourtB', 'uOverA', 'uOverB', 'uActors'];
 
@@ -34,7 +33,7 @@ function createRenderer(canvas) {
   gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
   TEXTURE_UNITS.forEach((name, unit) => gl.uniform1i(gl.getUniformLocation(program, name), unit));
   const uniform = name => gl.getUniformLocation(program, name);
-  const u = Object.fromEntries(['uRes', 'uSun', 'uCam', 'uWave', 'uWaveShape', 'uPad', 'uTime', 'uFade', 'uCopyHalf'].map(name => [name, uniform(name)]));
+  const u = Object.fromEntries(['uRes', 'uSun', 'uCam', 'uWave', 'uWaveShape', 'uPad', 'uTime', 'uCopyHalf'].map(name => [name, uniform(name)]));
 
   const textures = new Map();
   const upload = (canvasSource, filter = gl.LINEAR) => {
@@ -60,7 +59,7 @@ function createRenderer(canvas) {
   return { gl, u, upload, clear };
 }
 
-export function createHeroWorld({ host, canvas, copy, reduced = false, paused = false, onScene, onProgress, onReady }) {
+export function createHeroWorld({ host, canvas, copy, reduced = false, onReady }) {
   let renderer = null;
   let flat = null;
   try {
@@ -91,10 +90,8 @@ export function createHeroWorld({ host, canvas, copy, reduced = false, paused = 
   let destroyed = false;
   let resizeTimer = 0;
   let isReduced = reduced;
-  let isPaused = paused;
 
-  const frozen = () => isReduced || isPaused;
-  const shouldRun = () => !destroyed && !contextLost && cam && onScreen && !document.hidden && (!frozen() || transition);
+  const shouldRun = () => !destroyed && !contextLost && cam && onScreen && !document.hidden && (!isReduced || transition);
 
   function buildTextures() {
     if (!renderer || !baked) return;
@@ -139,14 +136,13 @@ export function createHeroWorld({ host, canvas, copy, reduced = false, paused = 
   }
 
   function waveState() {
-    if (!transition) return { radius: 1e5, fade: -1, passed: null };
+    if (!transition) return { radius: 1e5, passed: null };
     const ease = transition.t * transition.t * (3 - 2 * transition.t);
-    if (transition.soft) return { radius: 1e5, fade: ease, passed: () => ease > 0.5 };
     const { x, y, reach } = transition;
     const band = cam.cols * 0.06;
     const noise = cam.cols * 0.075;
     const radius = -band - noise + ease * (reach + 2 * (band + noise));
-    return { radius, fade: -1, band, noise, passed: (px, py) => Math.hypot(px - x, py - y) < radius + band / 2 };
+    return { radius, band, noise, passed: (px, py) => Math.hypot(px - x, py - y) < radius + band / 2 };
   }
 
   function render() {
@@ -182,7 +178,6 @@ export function createHeroWorld({ host, canvas, copy, reduced = false, paused = 
     gl.uniform2f(u.uWaveShape, wave.band || 1, wave.noise || 0);
     gl.uniform4f(u.uPad, box.left, box.right, box.top, box.bottom);
     gl.uniform1f(u.uTime, time);
-    gl.uniform1f(u.uFade, wave.fade);
     gl.uniform1f(u.uCopyHalf, copyHalf);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
@@ -192,15 +187,12 @@ export function createHeroWorld({ host, canvas, copy, reduced = false, paused = 
     if (transition) scene = transition.to;
     transition = null;
     if (next === scene) return;
-    const soft = frozen();
     const middle = (box.top + box.bottom) / 2;
     const origin = [[box.left, middle], [box.right, middle], [cam.cx, box.top], [cam.cx, box.bottom]][waveTurn++ % 4];
     const reach = Math.max(...[[box.left, box.top], [box.right, box.top], [box.left, box.bottom], [box.right, box.bottom]].map(([x, y]) => Math.hypot(x - origin[0], y - origin[1])));
-    transition = { from: scene, to: next, t: 0, soft, x: origin[0], y: origin[1], reach };
+    transition = { from: scene, to: next, t: 0, x: origin[0], y: origin[1], reach };
     life.enter(next);
-    onScene?.(next);
     hold = 0;
-    onProgress?.(0);
   }
 
   function frame(now) {
@@ -210,15 +202,14 @@ export function createHeroWorld({ host, canvas, copy, reduced = false, paused = 
     if (now - last < FRAME_MS - 2) return;
     const dt = Math.min(0.08, (now - last) / 1000 || FRAME_MS / 1000);
     last = now;
-    if (!frozen()) {
+    if (!isReduced) {
       time += dt;
       life.step(dt, time);
       hold += dt;
-      onProgress?.(clamp(hold / SCENE_SECONDS));
       if (hold >= SCENE_SECONDS) startTransition(((transition ? transition.to : scene) + 1) % SCENE_COUNT);
     }
     if (transition) {
-      transition.t = Math.min(1, transition.t + dt / (transition.soft ? SOFT_SECONDS : WAVE_SECONDS));
+      transition.t = Math.min(1, transition.t + dt / WAVE_SECONDS);
       if (transition.t >= 1) {
         scene = transition.to;
         transition = null;
@@ -265,16 +256,6 @@ export function createHeroWorld({ host, canvas, copy, reduced = false, paused = 
   layout();
 
   return {
-    goTo(index) {
-      if (!cam) return;
-      startTransition(index);
-      sync();
-    },
-    setPaused(value) {
-      isPaused = value;
-      sync();
-      render();
-    },
     setReduced(value) {
       isReduced = value;
       sync();
