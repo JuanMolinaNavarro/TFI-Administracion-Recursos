@@ -13,7 +13,7 @@ Proyecto académico de Administración de Recursos — UTN, 2026.
 
 ## Instalación y ejecución
 
-Requiere **Node.js 22.20.0 o superior**, con npm. Se verificó con Node.js 22.20.0. En esta versión de Node, SQLite puede mostrar una advertencia de módulo experimental.
+Requiere **Node.js 24 (24.x)**, con npm. Es la versión que usa Vercel en producción. SQLite puede mostrar una advertencia de módulo experimental.
 
 ```sh
 git clone https://github.com/BernabeFigueroa/TFI-Administracion-Recursos.git
@@ -203,7 +203,7 @@ node --env-file=.env server/start.cjs
 
 ## Configuración en Render
 
-Crear un Web Service desde la raíz del repositorio: Build Command `npm ci && npm run build`, Start Command `npm start`. El servicio sirve React y la API juntos. Configurar `NODE_VERSION=22.20.0`, `NODE_ENV=production`, `HOST=0.0.0.0`, `COOKIE_SECURE=true` y la conexión privada en `DATABASE_URL` (sin comillas exteriores en el formulario de Render).
+Crear un Web Service desde la raíz del repositorio: Build Command `npm ci && npm run build`, Start Command `npm start`. El servicio sirve React y la API juntos. Configurar `NODE_VERSION=24`, `NODE_ENV=production`, `HOST=0.0.0.0`, `COOKIE_SECURE=true` y la conexión privada en `DATABASE_URL` (sin comillas exteriores en el formulario de Render).
 
 Render proporciona `PORT` y `RENDER_EXTERNAL_URL`. El backend usa esta URL como origen autorizado si no se definió `APP_ORIGIN`; para un dominio propio, definir `APP_ORIGIN` con su URL HTTPS exacta. El certificado público debe estar incluido en `server/certs/supabase-ca.crt`. No copiar el `.env` completo a Git ni usar variables con prefijo `VITE_` para credenciales de la base.
 
