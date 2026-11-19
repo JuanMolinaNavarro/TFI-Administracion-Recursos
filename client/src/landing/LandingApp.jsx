@@ -115,7 +115,7 @@ export default function LandingApp() {
       </section>
     </main>
 
-    <footer className="landing-footer"><span>© 2026 RTL (Reserva Tu Lugar)</span><nav aria-label="Enlaces"><a href="/">Ir al sitio de reservas</a><a href="https://wa.me/5493865658984" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a></nav></footer>
+    <footer className="landing-footer"><span>© 2026 RTL (Reserva Tu Lugar)</span><nav aria-label="Enlaces"><a href="/">Ir al sitio de reservas</a><a href="https://wa.me/5493816443413" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a></nav></footer>
     {plan && <ClubModal plan={plan} onClose={() => setPlan(null)} />}
   </div>;
 }

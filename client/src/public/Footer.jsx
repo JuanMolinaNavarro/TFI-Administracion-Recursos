@@ -17,11 +17,11 @@ export default function Footer({ onNavigate, inert }) {
           <h2>Hablemos de tu próximo partido</h2>
           <p>¿Tenés una consulta? Estamos para ayudarte.</p>
           <div className="footer-contact-links">
-            <a href="tel:+543865658984" className="footer-contact-link">
+            <a href="tel:+543816443413" className="footer-contact-link">
               <span className="footer-contact-icon"><i className="fa-solid fa-phone" aria-hidden="true"></i></span>
               <span><small>Teléfono de contacto</small><strong>3816443413</strong></span>
             </a>
-            <a href="mailto:Lionelmessi91218@gmail.com" className="footer-contact-link">
+            <a href="mailto:admin@rtl.com" className="footer-contact-link">
               <span className="footer-contact-icon"><i className="fa-regular fa-envelope" aria-hidden="true"></i></span>
               <span><small>Correo electrónico</small><strong>admin@rtl.com</strong></span>
             </a>
