@@ -347,6 +347,10 @@ header {
   border-left: 3px solid #ee5253;
 }
 
+.sport-badge.karting {
+  border-left: 3px solid #8e44ad;
+}
+
 .court-info {
   display: flex;
   flex-direction: column;

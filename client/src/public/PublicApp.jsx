@@ -11,7 +11,7 @@ import '../styles/public.css';
 import '../styles/ticket.css';
 import '../styles/brand.css';
 
-const sportNames = { all: 'Todos', futbol: 'Fútbol', padel: 'Pádel', basquet: 'Básquetbol' };
+const sportNames = { all: 'Todos', futbol: 'Fútbol', padel: 'Pádel', basquet: 'Básquetbol', karting: 'Karting' };
 function startingPrice(complex, courts) { const prices = courts.filter(c => c.complexId === complex.id && c.enabled).map(c => c.price); return prices.length ? Math.min(...prices) : complex.price; }
 function CourtImage({ src, alt }) {
   const ref = useRef(null);

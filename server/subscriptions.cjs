@@ -160,7 +160,7 @@ function subscriptionsAPI({
           ownerEmail = email(d.adminEmail),
           name = text(d.name, 'Nombre', 100),
           location = text(d.location, 'Localidad', 100);
-        if (!['padel', 'futbol', 'basquet'].includes(d.sport)) fail(400, 'Deporte inválido.');
+        if (!['padel', 'futbol', 'basquet', 'karting'].includes(d.sport)) fail(400, 'Deporte inválido.');
         const count = integer(d.courtCount, 1, 50, 'Cantidad de canchas'),
           price = integer(d.courtPrice, 1, 10000000, 'Tarifa');
         if (await db.prepare('SELECT id FROM admins WHERE email=?').get(ownerEmail)) fail(409, 'Ya existe una cuenta con ese correo.');
@@ -175,15 +175,17 @@ function subscriptionsAPI({
           sportLabel: {
             padel: 'Pádel',
             futbol: 'Fútbol',
-            basquet: 'Básquetbol'
+            basquet: 'Básquetbol',
+            karting: 'Karting'
           }[d.sport],
           price,
           rating: 0,
           image: `assets/${{
             padel: 'padel',
             futbol: 'soccer',
-            basquet: 'basketball'
-          }[d.sport]}.png`,
+            basquet: 'basketball',
+            karting: 'karting'
+          }[d.sport]}-v1.webp`,
           features: [],
           availableSlots: ['15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00']
         };
@@ -196,11 +198,11 @@ function subscriptionsAPI({
               id: `${id}-court-${n}`,
               complexId: id,
               complexName: name,
-              name: `Cancha ${n}`,
+              name: `${d.sport === 'karting' ? 'Pista' : 'Cancha'} ${n}`,
               enabled: true,
               lighting: true,
-              type: 'Cubierta',
-              surface: d.sport === 'basquet' ? 'Parquet' : 'Césped sintético',
+              type: d.sport === 'karting' ? 'Descubierta' : 'Cubierta',
+              surface: d.sport === 'basquet' ? 'Parquet' : d.sport === 'karting' ? 'Asfalto' : 'Césped sintético',
               capacity: d.sport === 'padel' ? 4 : 10
             };
             await db.prepare('INSERT INTO courts VALUES(?,?,?)').run(c.id, id, JSON.stringify(c));
